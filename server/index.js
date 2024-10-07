@@ -1,16 +1,31 @@
 import express from "express"
 import dotenv from "dotenv"
+import mongoose from "mongoose"
+import boardRoutes from "./routes/board_route.js"
 // Load the environment variables into the application
 dotenv.config() // This loads the environment variables from the .env file into process.env
+
+mongoose
+  .connect(process.env.MONGOOSE_API_KEY)
+  .then(() => {
+    // If the connection is successful, this message will be logged
+    console.log(`Connected to your Database`)
+  })
+  .catch((error) => {
+    // If the connection fails, the error is logged
+    console.log(error)
+  })
+
+const app = express()
 
 // Middleware to parse incoming JSON requests
 app.use(express.json())
 
-const app = express()
-
 app.listen(7000, () => {
   console.log("server is running on port 7000")
 })
+
+app.use("/api/boards", boardRoutes)
 
 // Middleware to handle errors. If any route or middleware throws an error, it will be caught here.
 // `err` is the error object, and the middleware will send a structured JSON response with error details.
