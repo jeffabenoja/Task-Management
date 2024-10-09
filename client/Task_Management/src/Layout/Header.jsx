@@ -8,31 +8,42 @@ import { useFromUrlParams } from "../hooks/useFromUrl"
 import api from "../controller/services/api"
 import { useDispatch, useSelector } from "react-redux"
 import { toggleTheme } from "../controller/services/theme"
+import CustomModal from "../components/modal/CustomModal"
+import AddBoardForm from "../components/modal/AddBoardForm"
+import { useMemo } from "react"
+import EditBoardForm from "../components/modal/EditBoardForm"
 
 const Header = () => {
   // Use the custom hook to get the current tab
   const { theme } = useSelector((state) => state.theme)
   const { searchTerm } = useFromUrlParams("tab")
-  const [isOpen, setIsOpen] = useState(false)
+
   const dispatch = useDispatch()
 
-  const tab = searchTerm
-
-  const {
-    data: boards = [], // Default to an empty array if data is undefined
-    error,
-    isLoading,
-  } = api.useGetBoardQuery(undefined, {
-    selectFromResult: ({ data, error, isLoading }) => ({
-      data: data.boards,
-      error,
-      isLoading,
-    }),
+  const [modals, setModals] = useState({
+    isOpen: false,
+    openModal: false,
+    openEditModal: false,
+    ellipsisOpen: false,
   })
 
-  const handleToggle = () => {
-    setIsOpen((prev) => !prev)
+  const { data, error, isLoading } = api.useGetBoardsQuery()
+
+  // Ensure data is defined and has boards property
+  const boards = data?.boards || [] // Fallback to an empty array if boards is undefined
+
+  const currentBoard = useMemo(
+    () => boards.find((board) => board.name === searchTerm),
+    [boards, searchTerm]
+  )
+
+  const handleToggle = (modal) => {
+    setModals((prev) => ({
+      ...prev,
+      [modal]: !prev[modal],
+    }))
   }
+
   return (
     <div className='relative'>
       {/* Header */}
@@ -98,12 +109,14 @@ const Header = () => {
           <div className='flex justify-between items-center'>
             <div className='flex gap-2 justify-between items-center'>
               <h1 className='heading-l text-primary-600 dark:text-primary-100'>
-                Platform Lunch
+                <span>
+                  {currentBoard ? currentBoard.name : "No Board Selected"}
+                </span>
               </h1>
               <img
-                src={isOpen ? chevronUp : chevronDown}
+                src={modals.isOpen ? chevronUp : chevronDown}
                 alt='Chevron Logo'
-                onClick={handleToggle}
+                onClick={() => handleToggle("isOpen")}
                 className='md:hidden'
               />
             </div>
@@ -119,7 +132,7 @@ const Header = () => {
                   + Add Task
                 </p>
               </button>
-              <button>
+              <button onClick={() => handleToggle("ellipsisOpen")}>
                 <img src={ellipsis} alt='Options' />
               </button>
             </div>
@@ -127,10 +140,25 @@ const Header = () => {
         </div>
       </div>
 
+      {/* Ellipsis Navigation */}
+      {modals.ellipsisOpen && (
+        <div className='flex flex-col gap-4 position absolute right-[12px] md:right-[24px] top-[70px] md:top-[105px] bg-primary-100 dark:bg-primary-600 rounded-lg w-[130px] md:w-[192px] p-4'>
+          <span
+            className='cursor-pointer text-secondary-200'
+            onClick={() => handleToggle("openEditModal")}
+          >
+            Edit Board
+          </span>
+          <span className='cursor-pointer text-secondary-400'>
+            Delete Board
+          </span>
+        </div>
+      )}
+
       {/* Navigation tab*/}
-      {isOpen && (
+      {modals.isOpen && (
         <div
-          onClick={handleToggle}
+          onClick={() => handleToggle("isOpen")}
           className='md:hidden fixed left-0 right-0 bottom-0 top-[80px] bg-[rgba(0,0,0,0.2)] z-10'
         >
           <div
@@ -147,17 +175,19 @@ const Header = () => {
                 <Link to={`/dashboard?tab=${board.name}`} key={board.name}>
                   <div
                     className={`cursor-pointer mr-3 pl-6 py-3.5 flex gap-3 text-secondary-200 items-center hover:bg-primary-200 hover:rounded-tr-full hover:rounded-br-full ${
-                      tab === board.name &&
+                      currentBoard.name === board.name &&
                       "!bg-primary-400 !text-primary-100 rounded-tr-full rounded-br-full"
                     }`}
-                    onClick={handleToggle}
+                    onClick={() => handleToggle("isOpen")}
                   >
                     <svg
                       width='16'
                       height='16'
                       xmlns='http://www.w3.org/2000/svg'
                       className={`${
-                        tab === board.name ? "filter invert brightness-0" : ""
+                        currentBoard.name === board.name
+                          ? "filter invert brightness-0"
+                          : ""
                       }`}
                     >
                       <path
@@ -174,7 +204,7 @@ const Header = () => {
 
               <div
                 className='cursor-pointer mr-3 pl-6 py-3.5 flex gap-3 text-secondary-200 items-center hover:bg-primary-200 hover:rounded-tr-full hover:rounded-br-full'
-                onClick={handleToggle}
+                onClick={() => handleToggle("openModal")}
               >
                 <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
                   <path
@@ -231,6 +261,22 @@ const Header = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Modals */}
+      {modals.openModal && (
+        <CustomModal toggleModal={() => handleToggle("openModal")}>
+          <AddBoardForm toggleModal={() => handleToggle("openModal")} />
+        </CustomModal>
+      )}
+
+      {modals.openEditModal && (
+        <CustomModal toggleModal={() => handleToggle("openEditModal")}>
+          <EditBoardForm
+            board={currentBoard}
+            toggleModal={() => handleToggle("openEditModal")}
+          />
+        </CustomModal>
       )}
     </div>
   )

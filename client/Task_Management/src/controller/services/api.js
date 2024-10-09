@@ -6,9 +6,16 @@ const api = createApi({
     baseUrl: "/",
   }),
   endpoints: (builder) => ({
-    getBoard: builder.query({
+    getBoards: builder.query({
       query: () => "data.json",
     }),
+    // getBoard: builder.query({
+    //   query: (boardName) => "data.json",
+    //   transformResponse: (response) => {
+    //     const boards = response.boards || [] // Adjust based on your data structure
+    //     return boards.find((board) => board.name === boardName) || null
+    //   },
+    // }),
   }),
 })
 

@@ -54,7 +54,8 @@ export const board = async (req, res, next) => {
     })
   } catch (error) {
     if (error.code === 11000) {
-      return next(errorHandler(400, "This title topic already posted"))
+      console.log(error)
+      return next(errorHandler(400, "This board name is already posted"))
     }
     next(error)
   }

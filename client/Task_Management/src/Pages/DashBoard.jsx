@@ -8,21 +8,25 @@ const DashBoard = () => {
   const { searchTerm: tab } = useFromUrlParams("tab")
   const [isOpen, setIsOpen] = useState(true)
 
-  const {
-    data: boards = [], // Default to an empty array if data is undefined
-    error,
-    isLoading,
-  } = api.useGetBoardQuery(undefined, {
-    selectFromResult: ({ data, error, isLoading }) => ({
-      data: data.boards,
-      error,
-      isLoading,
-    }),
-  })
+  // const {
+  //   data: boards = [], // Default to an empty array if data is undefined
+  //   error,
+  //   isLoading,
+  // } = api.useGetBoardQuery(undefined, {
+  //   selectFromResult: ({ data, error, isLoading }) => ({
+  //     data: data.boards,
+  //     error,
+  //     isLoading,
+  //   }),
+  // })
+
+  const { data, error, isLoading } = api.useGetBoardsQuery()
+
+  // Ensure data is defined and has boards property
+  const boards = data?.boards || [] // Fallback to an empty array if boards is undefined
 
   // Find the specific board based on the tab directly
   const board = boards.find((b) => b.name === tab) || null
-
 
   return (
     <div className={`h-screen flex flex-col md:flex-row relative}`}>
