@@ -8,18 +8,6 @@ const DashBoard = () => {
   const { searchTerm: tab } = useFromUrlParams("tab")
   const [isOpen, setIsOpen] = useState(true)
 
-  // const {
-  //   data: boards = [], // Default to an empty array if data is undefined
-  //   error,
-  //   isLoading,
-  // } = api.useGetBoardQuery(undefined, {
-  //   selectFromResult: ({ data, error, isLoading }) => ({
-  //     data: data.boards,
-  //     error,
-  //     isLoading,
-  //   }),
-  // })
-
   const { data, error, isLoading } = api.useGetBoardsQuery()
 
   // Ensure data is defined and has boards property
@@ -38,16 +26,22 @@ const DashBoard = () => {
 
       {/* Main Content */}
       <div
-        className={`flex-grow border-l border-secondary-100 dark:border-secondary-500 ${
+        className={`flex-grow border-l border-secondary-100 dark:border-secondary-500 flex items-center justify-center ${
           isOpen ? "" : "border-none"
         }`}
       >
         {/* Render Board or Error Message */}
-        {board ? (
-          <Board board={board} />
-        ) : (
-          <h1 className='text-secondary-600 text-center mt-4 text-3xl text-bold'>
-            Board does not exist
+        {boards && board ? <Board board={board} /> : <></>}
+
+        {!tab && (
+          <h1 className='text-secondary-600 text-center mt-4 text-3xl text-bold dark:text-primary-100'>
+            Select board
+          </h1>
+        )}
+
+        {boards && boards?.length === 0 && (
+          <h1 className='text-secondary-600 text-center mt-4 text-3xl text-bold dark:text-primary-100'>
+            Create board
           </h1>
         )}
       </div>

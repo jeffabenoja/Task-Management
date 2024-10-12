@@ -6,6 +6,7 @@ import { useState } from "react"
 import CustomModal from "./modal/CustomModal"
 import AddBoardForm from "./modal/AddBoardForm"
 
+
 const Sidebar = ({ boards, setIsOpen }) => {
   const { theme } = useSelector((state) => state.theme)
   const { searchTerm } = useFromUrlParams("tab")

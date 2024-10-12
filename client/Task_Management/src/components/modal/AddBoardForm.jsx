@@ -45,10 +45,7 @@ const AddBoardForm = ({ toggleModal }) => {
       }
 
       const _data = await res.json()
-      console.log(
-        board ? "Successfully updated board" : "Successfully added new board",
-        _data
-      )
+      console.log("Successfully added new board", _data)
       toggleModal()
     } catch (error) {
       console.error("Error submitting the board:", error)

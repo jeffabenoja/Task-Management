@@ -109,9 +109,7 @@ const Header = () => {
           <div className='flex justify-between items-center'>
             <div className='flex gap-2 justify-between items-center'>
               <h1 className='heading-l text-primary-600 dark:text-primary-100'>
-                <span>
-                  {currentBoard ? currentBoard.name : "No Board Selected"}
-                </span>
+                <span>{currentBoard ? currentBoard?.name : "No Board"}</span>
               </h1>
               <img
                 src={modals.isOpen ? chevronUp : chevronDown}
@@ -175,7 +173,7 @@ const Header = () => {
                 <Link to={`/dashboard?tab=${board.name}`} key={board.name}>
                   <div
                     className={`cursor-pointer mr-3 pl-6 py-3.5 flex gap-3 text-secondary-200 items-center hover:bg-primary-200 hover:rounded-tr-full hover:rounded-br-full ${
-                      currentBoard.name === board.name &&
+                      currentBoard?.name === board.name &&
                       "!bg-primary-400 !text-primary-100 rounded-tr-full rounded-br-full"
                     }`}
                     onClick={() => handleToggle("isOpen")}
@@ -185,7 +183,7 @@ const Header = () => {
                       height='16'
                       xmlns='http://www.w3.org/2000/svg'
                       className={`${
-                        currentBoard.name === board.name
+                        currentBoard?.name === board.name
                           ? "filter invert brightness-0"
                           : ""
                       }`}

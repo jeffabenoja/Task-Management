@@ -1,10 +1,9 @@
 import { useState } from "react"
 
-const EditBoardForm = ({ board, toggleModal }) => {
-  
+const AddColumnForm = ({ board, toggleModal }) => {
   const [data, setData] = useState({
-    name: board ? board.name : "",
-    columns: board ? board.columns : [],
+    name: board?.name,
+    columns: board?.columns,
   })
 
   const handleDeleteColumn = (index) => {
@@ -33,8 +32,8 @@ const EditBoardForm = ({ board, toggleModal }) => {
     e.preventDefault()
 
     try {
-      const res = await fetch(`/api/boards/update/${board._id}`, {
-        method: "PUT",
+      const res = await fetch(`/api/column/create/${board._id}`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -46,10 +45,10 @@ const EditBoardForm = ({ board, toggleModal }) => {
       }
 
       const _data = await res.json()
-      console.log("Successfully updated board", _data)
+      console.log("Successfully updated column", _data)
       toggleModal()
     } catch (error) {
-      console.error("Error submitting the board:", error)
+      console.error("Error submitting the column:", error)
       // Optionally: set an error state and display it to the user
     }
   }
@@ -57,7 +56,7 @@ const EditBoardForm = ({ board, toggleModal }) => {
   return (
     <>
       <div className='flex flex-col gap-6'>
-        <h3 className='heading-l'>Edit Board</h3>
+        <h3 className='heading-l'>Add Column</h3>
         <form
           className='flex flex-col gap-6 text-secondary-200'
           onSubmit={handleBoardSubmit}
@@ -74,8 +73,9 @@ const EditBoardForm = ({ board, toggleModal }) => {
               onChange={(e) => setData({ ...data, name: e.target.value })}
               placeholder='e.g Web Design'
               className='text-black text-primary-100 py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
-              focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
+                  focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
               required
+              disabled
             />
           </div>
 
@@ -96,7 +96,7 @@ const EditBoardForm = ({ board, toggleModal }) => {
                     value={column.name}
                     onChange={(e) => handleColumnChange(index, e)}
                     className='text-black dark:text-primary-100 flex-1 py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
-                    focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
+                        focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
                     required
                   />
                   <span
@@ -128,7 +128,7 @@ const EditBoardForm = ({ board, toggleModal }) => {
 
           {/* Handle Submit */}
           <button className='bg-primary-400 rounded-[20px] py-2' type='submit'>
-            <p className='text-primary-100 body-l'>Update Board</p>
+            <p className='text-primary-100 body-l'>Update Column</p>
           </button>
         </form>
       </div>
@@ -136,4 +136,4 @@ const EditBoardForm = ({ board, toggleModal }) => {
   )
 }
 
-export default EditBoardForm
+export default AddColumnForm
