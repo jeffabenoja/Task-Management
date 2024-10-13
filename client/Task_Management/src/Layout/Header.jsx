@@ -29,10 +29,7 @@ const Header = () => {
     openAddTask: false,
   })
 
-  const { data, error, isLoading } = api.useGetBoardsQuery()
-
-  // Ensure data is defined and has boards property
-  const boards = data?.boards || [] // Fallback to an empty array if boards is undefined
+  const { data: boards = [] } = api.useGetBoardsQuery()
 
   const currentBoard = useMemo(
     () => boards.find((board) => board.slug === searchTerm),

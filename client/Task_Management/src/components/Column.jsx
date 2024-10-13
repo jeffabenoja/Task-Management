@@ -24,7 +24,7 @@ const Column = ({ columns, toggleModal }) => {
                 style={{ backgroundColor: columnColor }}
               ></div>
               <h2 className='text-sencondary-200 font-bold text-xs tracking-[2.4px] uppercase'>
-                {c.name} <span>({c.tasks.length})</span>
+                {/* {c.name} <span>({c.tasks.length})</span> */} {c.name}
               </h2>
             </div>
 

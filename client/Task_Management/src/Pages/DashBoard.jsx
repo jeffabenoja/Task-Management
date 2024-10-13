@@ -8,10 +8,11 @@ const DashBoard = () => {
   const { searchTerm: tab } = useFromUrlParams("tab")
   const [isOpen, setIsOpen] = useState(true)
 
-  const { data } = api.useGetBoardsQuery()
+  const { data: boards = [] } = api.useGetBoardsQuery()
 
-  // Ensure data is defined and has boards property
-  const boards = data?.boards || [] // Fallback to an empty array if boards is undefined
+  const selectedBoard = boards.find((board) => board.slug === tab)
+
+  console.log(selectedBoard)
 
   return (
     <div className={`h-screen md:flex relative}`}>
@@ -27,7 +28,7 @@ const DashBoard = () => {
           isOpen ? "" : "border-none"
         }`}
       >
-        {boards && tab && <Board />}
+        {boards && tab && <Board board={selectedBoard} />}
 
         {boards && boards?.length === 0 && (
           <div className=' flex justify-center items-center h-full  '>

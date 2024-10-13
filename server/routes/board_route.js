@@ -1,10 +1,14 @@
 import express from "express"
-import { board, updateBoard, getBoard } from "../controllers/services/board.js"
+import {
+  board,
+  updateBoard,
+  getAllBoards,
+} from "../controllers/services/board.js"
 
 const router = express.Router()
 
 router.post("/create", board)
 router.put("/update/:boardId", updateBoard)
-router.get("/get/:boardId", getBoard)
+router.get("/get", getAllBoards)
 
 export default router

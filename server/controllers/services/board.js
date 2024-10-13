@@ -154,27 +154,33 @@ export const updateBoard = async (req, res, next) => {
   }
 }
 
-export const getBoard = async (req, res, next) => {
+export const getAllBoards = async (req, res, next) => {
   try {
-    // Fetch the board by ID
-    const board = await Board.findById(req.params.boardId)
+    // Fetch all boards
+    const boards = await Board.find()
 
-    // If the board is not found, return a 404 error
-    if (!board) {
-      return next(errorHandler(404, "Board not found"))
+    // If no boards are found, return a 404 error
+    if (!boards || boards.length === 0) {
+      return next(errorHandler(404, "No boards found"))
     }
 
-    // Fetch all columns associated with the board
-    const columns = await Column.find({ board_id: req.params.boardId })
+    // Fetch columns associated with each board
+    const boardsWithColumns = await Promise.all(
+      boards.map(async (board) => {
+        const columns = await Column.find({ board_id: board._id })
+        return { ...board.toObject(), columns } // Convert board to object and add its columns
+      })
+    )
 
-    // Count the total number of columns for this board (optional: or for all columns in the collection)
+    // Count the total number of columns in the collection
     const totalColumns = await Column.countDocuments()
+    const totalBoards = await Board.countDocuments()
 
-    // Return the board, its columns, and the total column count
+    // Return the boards with their columns and total column count
     res.status(200).json({
-      ...board.toObject(),
-      columns: columns,
-      totalColumns,
+      boards: boardsWithColumns, // All boards with their associated columns
+      totalBoards,
+      totalColumns, // Total number of columns
     })
   } catch (error) {
     next(error)

@@ -2,10 +2,6 @@ import mongoose from "mongoose"
 
 const columnSchema = new mongoose.Schema(
   {
-    // user_id: {
-    //   type: String,
-    //   required: true,
-    // },
     board_id: {
       type: String,
       required: true,

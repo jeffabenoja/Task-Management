@@ -37,3 +37,27 @@ export const createNewColumn = async (req, res, next) => {
     next(error)
   }
 }
+
+export const getColumns = async (req, res, next) => {
+  try {
+    console.log(req.body)
+    // Fetch the board by ID
+    const column = await Column.find({ boardId: req.params.boardId })
+
+    // If the board is not found, return a 404 error
+    if (!column) {
+      return next(errorHandler(404, "Column not found"))
+    }
+
+    // Count the total number of columns for this board (optional: or for all columns in the collection)
+    const totalColumns = await Column.countDocuments()
+
+    // Return the board, its columns, and the total column count
+    res.status(200).json({
+      ...column.toObject(),
+      totalColumns,
+    })
+  } catch (error) {
+    next(error)
+  }
+}

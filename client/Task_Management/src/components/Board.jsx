@@ -3,15 +3,11 @@ import { useState } from "react"
 import CustomModal from "./modal/CustomModal"
 import AddColumnForm from "./modal/AddColumnForm"
 import { useScrollWheel } from "../hooks/useScrollWheel"
-import { useFromUrlParams } from "../hooks/useFromUrl"
-import api from "../controller/services/api"
 
-const Board = () => {
+const Board = ({ board }) => {
   const [openModal, setOpenModal] = useState(false)
-  const { searchTerm: tab } = useFromUrlParams("tab")
-  const columnsRef = useScrollWheel()
 
-  const { data: board = [], error, isLoading } = api.useGetBoardQuery(tab)
+  const columnsRef = useScrollWheel()
 
   const toggleModal = () => {
     setOpenModal((prev) => !prev)
@@ -46,7 +42,7 @@ const Board = () => {
       {/* Add Column Form */}
       {openModal && (
         <CustomModal toggleModal={toggleModal}>
-          <AddColumnForm board={board} toggleModal={toggleModal} />
+          <AddColumnForm toggleModal={toggleModal} />
         </CustomModal>
       )}
     </>

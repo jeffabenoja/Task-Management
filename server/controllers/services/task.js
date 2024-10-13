@@ -3,9 +3,7 @@ import Task from "../../models/task_model.js"
 
 export const task = async (req, res, next) => {
   try {
-    console.log(req.body)
-
-    const { title } = req.body
+    const { title, subtasks } = req.body
 
     // Check if required fields are provided
     if (!title) {
@@ -20,7 +18,6 @@ export const task = async (req, res, next) => {
     // Create a new task with filtered subtasks
     const newTask = new Task({ ...req.body, subtasks: filteredSubtasks })
 
-  
     const saveNewTask = await newTask.save()
 
     res.status(201).json(saveNewTask)

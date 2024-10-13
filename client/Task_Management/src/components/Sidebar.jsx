@@ -8,11 +8,9 @@ import AddBoardForm from "./modal/AddBoardForm"
 
 const Sidebar = ({ boards, setIsOpen }) => {
   const { theme } = useSelector((state) => state.theme)
-  const { searchTerm } = useFromUrlParams("tab")
+  const { searchTerm: tab } = useFromUrlParams("tab")
   const dispatch = useDispatch()
   const [openModal, setOpenModal] = useState(false)
-
-  const tab = searchTerm
 
   const toggleModal = () => {
     setOpenModal((prev) => !prev)
@@ -23,11 +21,11 @@ const Sidebar = ({ boards, setIsOpen }) => {
         <div className='flex flex-col pr-6 py-4'>
           <div className='pl-8 mb-5'>
             <p className='text-secondary-200 tracking-[2.4px]'>
-              ALL BOARDS ({boards.length})
+              ALL BOARDS ({boards?.length})
             </p>
           </div>
           {boards.map((board) => (
-            <Link to={`/dashboard?tab=${board.slug}`} key={board.name}>
+            <Link to={`/dashboard?tab=${board.slug}`} key={board._id}>
               <div
                 className={`cursor-pointer pl-8 py-3.5 flex gap-4 text-secondary-200 items-center dark:hover:bg-primary-100 hover:bg-primary-200 hover:rounded-tr-full hover:rounded-br-full ${
                   tab === board.slug &&

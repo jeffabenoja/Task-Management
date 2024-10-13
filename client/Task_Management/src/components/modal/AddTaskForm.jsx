@@ -7,28 +7,31 @@ const AddTaskForm = ({ columns, toggleModal }) => {
     columnId: columns[0]?._id,
     title: "",
     description: "",
-    subtask: [{ title: "" }, { title: "" }],
+    subtasks: [
+      { title: "", isCompleted: false },
+      { title: "", isCompleted: false },
+    ],
     status: columns[0]?.name,
   })
   const [dropDown, setDropDown] = useState(false)
 
   const handleDeleteSubtask = (index) => {
-    if (data.subtask.length > 1) {
-      const subtask = data.subtask.filter((_, subIndex) => subIndex !== index)
-      setData((prevData) => ({ ...prevData, subtask: subtask }))
+    if (data.subtasks.length > 1) {
+      const subtask = data.subtasks.filter((_, subIndex) => subIndex !== index)
+      setData((prevData) => ({ ...prevData, subtasks: subtask }))
     }
   }
 
   const handleSubtaskChange = (index, e) => {
-    const subtasks = [...data.subtask]
-    subtasks[index].title = e.target.value
-    setData((prevData) => ({ ...prevData, subtaks: subtasks }))
+    const subtask = [...data.subtasks]
+    subtask[index].title = e.target.value
+    setData((prevData) => ({ ...prevData, subtasks: subtask }))
   }
 
   const addNewSubtask = () => {
     setData((prevData) => ({
       ...prevData,
-      subtask: [...prevData.subtask, { title: "" }],
+      subtasks: [...prevData.subtasks, { title: "", isCompleted: false }],
     }))
   }
 
@@ -111,7 +114,7 @@ const AddTaskForm = ({ columns, toggleModal }) => {
               Subtasks
             </label>
             <div className='flex flex-col gap-3'>
-              {data.subtask.map((s, index) => (
+              {data.subtasks.map((s, index) => (
                 <div
                   className='flex items-center justify-between gap-4'
                   key={index}
