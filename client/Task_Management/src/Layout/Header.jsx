@@ -12,6 +12,7 @@ import CustomModal from "../components/modal/CustomModal"
 import AddBoardForm from "../components/modal/AddBoardForm"
 import { useMemo } from "react"
 import EditBoardForm from "../components/modal/EditBoardForm"
+import AddTaskForm from "../components/modal/AddTaskForm"
 
 const Header = () => {
   // Use the custom hook to get the current tab
@@ -25,6 +26,7 @@ const Header = () => {
     openModal: false,
     openEditModal: false,
     ellipsisOpen: false,
+    openAddTask: false,
   })
 
   const { data, error, isLoading } = api.useGetBoardsQuery()
@@ -120,6 +122,7 @@ const Header = () => {
             </div>
             <div className='flex justify-between items-center gap-4'>
               <button
+                onClick={() => handleToggle("openAddTask")}
                 className='py-2.5 px-[18px] md:py-3.5 md:px-6 md:flex md:justify-between md:items-center rounded-3xl bg-primary-400 hover:bg-primary-300 disabled:bg-primary-300 active:bg-primary-400 focus:outline-none '
                 disabled={boards.length === 0 ? true : false}
               >
@@ -273,6 +276,15 @@ const Header = () => {
           <EditBoardForm
             board={currentBoard}
             toggleModal={() => handleToggle("openEditModal")}
+          />
+        </CustomModal>
+      )}
+
+      {modals.openAddTask && (
+        <CustomModal toggleModal={() => handleToggle("openAddTask")}>
+          <AddTaskForm
+            columns={currentBoard?.columns}
+            toggleModal={() => handleToggle("openAddTask")}
           />
         </CustomModal>
       )}

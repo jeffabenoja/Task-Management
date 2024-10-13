@@ -83,6 +83,10 @@ h6 {
   overflow-wrap: break-word;
 }
 
+textarea {
+  resize: none;
+}
+
 .body-l {
   font-weight: bold;
   font-size: 13px;
@@ -101,7 +105,7 @@ h6 {
   line-height: 1.3;
 }
 
-.heading-l {
+.heading-xl {
   font-weight: bold;
   font-size: 24px;
   line-height: 1.25;

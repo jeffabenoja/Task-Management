@@ -4,7 +4,7 @@ const CustomModal = ({ toggleModal, children }) => {
   return (
     <div
       onClick={toggleModal}
-      className='fixed left-0 right-0 bottom-0 top-0 bg-[rgba(0,0,0,0.2)] z-20 flex items-center justify-center'
+      className='fixed left-0 right-0 bottom-0 top-0 bg-[rgba(0,0,0,0.2)] z-20 flex items-center justify-center overflow-y-auto max-h-screen scrollbar-hide'
     >
       <div
         onClick={(e) => e.stopPropagation()}

@@ -72,7 +72,7 @@ const AddColumnForm = ({ board, toggleModal }) => {
               value={data.name}
               onChange={(e) => setData({ ...data, name: e.target.value })}
               placeholder='e.g Web Design'
-              className='text-black text-primary-100 py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
+              className='text-black dark:text-primary-100 py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
                   focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
               required
               disabled
