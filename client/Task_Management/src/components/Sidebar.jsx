@@ -6,7 +6,6 @@ import { useState } from "react"
 import CustomModal from "./modal/CustomModal"
 import AddBoardForm from "./modal/AddBoardForm"
 
-
 const Sidebar = ({ boards, setIsOpen }) => {
   const { theme } = useSelector((state) => state.theme)
   const { searchTerm } = useFromUrlParams("tab")
@@ -28,10 +27,10 @@ const Sidebar = ({ boards, setIsOpen }) => {
             </p>
           </div>
           {boards.map((board) => (
-            <Link to={`/dashboard?tab=${board.name}`} key={board.name}>
+            <Link to={`/dashboard?tab=${board.slug}`} key={board.name}>
               <div
                 className={`cursor-pointer pl-8 py-3.5 flex gap-4 text-secondary-200 items-center dark:hover:bg-primary-100 hover:bg-primary-200 hover:rounded-tr-full hover:rounded-br-full ${
-                  tab === board.name &&
+                  tab === board.slug &&
                   "!bg-primary-400 !text-primary-100 rounded-tr-full rounded-br-full"
                 }`}
               >
@@ -40,7 +39,7 @@ const Sidebar = ({ boards, setIsOpen }) => {
                   height='16'
                   xmlns='http://www.w3.org/2000/svg'
                   className={`${
-                    tab === board.name ? "filter invert brightness-0" : ""
+                    tab === board.slug ? "filter invert brightness-0" : ""
                   }`}
                 >
                   <path

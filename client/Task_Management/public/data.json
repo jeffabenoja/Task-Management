@@ -1,10 +1,13 @@
 {
   "boards": [
     {
+      "id": "af7c1fe6-d669-414e-b066-e9733f0de7a8",
       "name": "Platform Launch",
+      "slug": "platform-launch",
       "columns": [
         {
           "name": "Todo",
+          "slug": "todo",
           "tasks": [
             {
               "title": "Build UI for onboarding flow",
@@ -284,7 +287,9 @@
       ]
     },
     {
+      "id": "08c71152-c552-42e7-b094-f510ff44e9cb",
       "name": "Marketing Plan",
+      "slug": "marketing-plan",
       "columns": [
         {
           "name": "Todo",
@@ -375,7 +380,9 @@
       ]
     },
     {
+      "id": "c558a80a-f319-4c10-95d4-4282ef745b4b",
       "name": "Roadmap",
+      "slug": "roadmap",
       "columns": [
         {
           "name": "Now",

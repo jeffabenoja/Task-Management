@@ -1,5 +1,5 @@
 import { useFromUrlParams } from "../hooks/useFromUrl"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Board from "../components/Board"
 import Sidebar from "../components/Sidebar"
 import api from "../controller/services/api"
@@ -13,11 +13,8 @@ const DashBoard = () => {
   // Ensure data is defined and has boards property
   const boards = data?.boards || [] // Fallback to an empty array if boards is undefined
 
-  // Find the specific board based on the tab directly
-  const board = boards.find((b) => b.name === tab) || null
-
   return (
-    <div className={`h-screen flex flex-col md:flex-row relative}`}>
+    <div className={`h-screen md:flex relative}`}>
       {/* Sidebar Wrapper */}
       <div className={`hidden md:block ${isOpen ? "" : "!hidden"}`}>
         {/* Sidebar Component */}
@@ -26,23 +23,26 @@ const DashBoard = () => {
 
       {/* Main Content */}
       <div
-        className={`flex-grow border-l border-secondary-100 dark:border-secondary-500 flex items-center justify-center ${
+        className={`w-full h-full overflow-hidden border-l border-secondary-100 dark:border-secondary-500 ${
           isOpen ? "" : "border-none"
         }`}
       >
-        {/* Render Board or Error Message */}
-        {boards && board ? <Board board={board} /> : <></>}
-
-        {!tab && (
-          <h1 className='text-secondary-600 text-center mt-4 text-3xl text-bold dark:text-primary-100'>
-            Select board
-          </h1>
-        )}
+        {boards && tab && <Board />}
 
         {boards && boards?.length === 0 && (
-          <h1 className='text-secondary-600 text-center mt-4 text-3xl text-bold dark:text-primary-100'>
-            Create board
-          </h1>
+          <div className=' flex justify-center items-center h-full  '>
+            <h1 className='text-secondary-600 text-center mt-4 text-3xl text-bold dark:text-primary-100'>
+              Create board
+            </h1>
+          </div>
+        )}
+
+        {!tab && (
+          <div className='flex justify-center items-center h-full  '>
+            <h1 className='text-secondary-600 text-center mt-4 text-3xl text-bold dark:text-primary-100'>
+              Select board
+            </h1>
+          </div>
         )}
       </div>
 

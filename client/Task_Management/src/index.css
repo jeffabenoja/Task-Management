@@ -106,3 +106,22 @@ h6 {
   font-size: 24px;
   line-height: 1.25;
 }
+
+/* For smooth horizontal scrolling and optional scrollbar hiding */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.snaps-inline {
+  scroll-snap-type: inline mandatory;
+  scroll-padding-inline: 24px;
+}
+
+.snaps-inline > * {
+  scroll-snap-align: start;
+}

@@ -5,9 +5,22 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/",
   }),
+  tagTypes: ["Board"], // Keep the tag type consistent
   endpoints: (builder) => ({
     getBoards: builder.query({
       query: () => "data.json",
+    }),
+
+    getBoard: builder.query({
+      query: (tab) => "data.json", // Accept tab as a parameter here
+      transformResponse: (response, meta, tab) => {
+        // Add tab as a parameter to transformResponse
+        console.log(response.boards) // Log boards to debug
+        const board = response.boards.find((b) => b.slug === tab) || null // Use tab correctly
+        return board // Return the found board
+      },
+      providesTags: (result) =>
+        result ? [{ type: "Board", id: result.slug }] : [], // Provide tag based on result
     }),
   }),
 })

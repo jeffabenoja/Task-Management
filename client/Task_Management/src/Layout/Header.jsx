@@ -33,7 +33,7 @@ const Header = () => {
   const boards = data?.boards || [] // Fallback to an empty array if boards is undefined
 
   const currentBoard = useMemo(
-    () => boards.find((board) => board.name === searchTerm),
+    () => boards.find((board) => board.slug === searchTerm),
     [boards, searchTerm]
   )
 
@@ -170,7 +170,7 @@ const Header = () => {
                 </p>
               </div>
               {boards.map((board) => (
-                <Link to={`/dashboard?tab=${board.name}`} key={board.name}>
+                <Link to={`/dashboard?tab=${board.slug}`} key={board.name}>
                   <div
                     className={`cursor-pointer mr-3 pl-6 py-3.5 flex gap-3 text-secondary-200 items-center hover:bg-primary-200 hover:rounded-tr-full hover:rounded-br-full ${
                       currentBoard?.name === board.name &&
