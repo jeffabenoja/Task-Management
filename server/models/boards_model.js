@@ -2,19 +2,13 @@ import mongoose from "mongoose"
 
 const boardSchema = new mongoose.Schema(
   {
-    // userId: {
-    //   type: String,
-    //   required: true,
-    // }
-    name: {
+    title: {
       type: String,
       required: true,
-      unique: true,
     },
     slug: {
       type: String,
       required: true,
-      unique: true,
     },
   },
   { timestamps: true }

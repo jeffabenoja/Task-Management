@@ -63,7 +63,7 @@ export const board = async (req, res, next) => {
 
 export const updateBoard = async (req, res, next) => {
   try {
-    const { name, columns } = req.body
+    const { name, columns, deletedColumns } = req.body
 
     // Check if required fields are provided
     if (!name || !columns) {
@@ -92,6 +92,10 @@ export const updateBoard = async (req, res, next) => {
     // Check if the board was found
     if (!updatedBoard) {
       return next(errorHandler(404, "Board not found")) // Handle the case where the board does not exist
+    }
+
+    if (deletedColumns && deletedColumns.length > 0) {
+      await Column.deleteMany({ _id: { $in: deletedColumns } })
     }
 
     let updatedColumns = []
@@ -154,7 +158,6 @@ export const getBoard = async (req, res, next) => {
   try {
     // Fetch the board by ID
     const board = await Board.findById(req.params.boardId)
-
 
     // If the board is not found, return a 404 error
     if (!board) {

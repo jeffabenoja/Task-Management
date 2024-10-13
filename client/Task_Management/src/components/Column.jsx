@@ -3,20 +3,15 @@ import CustomModal from "./modal/CustomModal"
 import AddColumnForm from "./modal/AddColumnForm"
 import { useGenerateColors } from "../hooks/useGenerateColors"
 
-const Column = ({ board }) => {
-  const [openModal, setOpenModal] = useState(false)
+const Column = ({ columns, toggleModal }) => {
   const generateRandomColor = useGenerateColors()
-
-  const toggleModal = () => {
-    setOpenModal((prev) => !prev)
-  }
 
   // Define fixed colors for the first three columns
   const fixedColors = ["#49C4E5", "#67E2AE", "#8471F2"]
 
   return (
     <>
-      {board?.columns.map((c, index) => {
+      {columns.map((c, index) => {
         const columnColor =
           index < fixedColors.length
             ? fixedColors[index]
@@ -33,7 +28,7 @@ const Column = ({ board }) => {
               </h2>
             </div>
 
-            {/* Tasks */}
+            {/* Tasks Card */}
           </div>
         )
       })}
@@ -47,13 +42,6 @@ const Column = ({ board }) => {
           + New Column
         </h2>
       </div>
-
-      {/* Open Modal */}
-      {openModal && (
-        <CustomModal toggleModal={toggleModal}>
-          <AddColumnForm board={board} toggleModal={toggleModal} />
-        </CustomModal>
-      )}
     </>
   )
 }

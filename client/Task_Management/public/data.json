@@ -1,11 +1,12 @@
 {
   "boards": [
     {
-      "id": "af7c1fe6-d669-414e-b066-e9733f0de7a8",
+      "_id": "af7c1fe6-d669-414e-b066-e9733f0de7a8",
       "name": "Platform Launch",
       "slug": "platform-launch",
       "columns": [
         {
+          "_id": "fd4a096f-93f5-4f2a-86c6-69a2d20365ff",
           "name": "Todo",
           "slug": "todo",
           "tasks": [
@@ -72,6 +73,7 @@
           ]
         },
         {
+          "_id": "96fdc209-0551-4d67-b9ad-0e9067a44bc4",
           "name": "Doing",
           "tasks": [
             {
@@ -183,6 +185,7 @@
           ]
         },
         {
+          "_id": "8c4753ae-21ad-4153-8f32-1aacc4da2643",
           "name": "Done",
           "tasks": [
             {
@@ -287,7 +290,7 @@
       ]
     },
     {
-      "id": "08c71152-c552-42e7-b094-f510ff44e9cb",
+      "_id": "08c71152-c552-42e7-b094-f510ff44e9cb",
       "name": "Marketing Plan",
       "slug": "marketing-plan",
       "columns": [
@@ -380,7 +383,7 @@
       ]
     },
     {
-      "id": "c558a80a-f319-4c10-95d4-4282ef745b4b",
+      "_id": "c558a80a-f319-4c10-95d4-4282ef745b4b",
       "name": "Roadmap",
       "slug": "roadmap",
       "columns": [

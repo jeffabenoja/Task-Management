@@ -4,10 +4,11 @@ import chevronDown from "../../assets/icon-chevron-down.svg"
 
 const AddTaskForm = ({ columns, toggleModal }) => {
   const [data, setData] = useState({
+    columnId: columns[0]?._id,
     title: "",
     description: "",
     subtask: [{ title: "" }, { title: "" }],
-    status: columns[0].name,
+    status: columns[0]?.name,
   })
   const [dropDown, setDropDown] = useState(false)
 
@@ -18,9 +19,9 @@ const AddTaskForm = ({ columns, toggleModal }) => {
     }
   }
 
-  const handleSubtaskChange = (index, event) => {
+  const handleSubtaskChange = (index, e) => {
     const subtasks = [...data.subtask]
-    subtasks[index].title = event.target.value
+    subtasks[index].title = e.target.value
     setData((prevData) => ({ ...prevData, subtaks: subtasks }))
   }
 
@@ -32,7 +33,32 @@ const AddTaskForm = ({ columns, toggleModal }) => {
   }
 
   const handleDropDown = (c) => {
-    setData({ ...data, status: c.name })
+    setData({ ...data, columnId: c._id || "", status: c.name })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    try {
+      const res = await fetch(`/api/task/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+
+      if (!res.ok) {
+        throw new Error("Network response was not ok")
+      }
+
+      const _data = await res.json()
+      console.log("Successfully added new task", _data)
+      toggleModal()
+    } catch (error) {
+      console.error("Error submitting the task:", error)
+      // Optionally: set an error state and display it to the user
+    }
   }
 
   return (
@@ -41,7 +67,7 @@ const AddTaskForm = ({ columns, toggleModal }) => {
         <h3 className='heading-l'>Add New Task</h3>
         <form
           className='flex flex-col gap-6 text-secondary-200'
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
         >
           {/* Task Title */}
           <div className='flex flex-col gap-2'>
@@ -76,7 +102,6 @@ const AddTaskForm = ({ columns, toggleModal }) => {
               }
               className='leading-6 text-black dark:text-primary-100 py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
               focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
-              required
             />
           </div>
 
@@ -144,7 +169,11 @@ const AddTaskForm = ({ columns, toggleModal }) => {
                 {data.status}
               </span>
 
-              <img src={chevronDown} alt='' onClick={() => setDropDown(true)} />
+              <img
+                src={dropDown ? chevronUp : chevronDown}
+                alt=''
+                onClick={() => setDropDown((prev) => !prev)}
+              />
             </div>
             {/* DropDown */}
             {dropDown && (

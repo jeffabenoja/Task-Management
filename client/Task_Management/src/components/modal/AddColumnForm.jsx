@@ -2,6 +2,7 @@ import { useState } from "react"
 
 const AddColumnForm = ({ board, toggleModal }) => {
   const [data, setData] = useState({
+    boardId: board?._id || "",
     name: board?.name,
     columns: board?.columns,
   })

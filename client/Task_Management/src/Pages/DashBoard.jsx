@@ -8,7 +8,7 @@ const DashBoard = () => {
   const { searchTerm: tab } = useFromUrlParams("tab")
   const [isOpen, setIsOpen] = useState(true)
 
-  const { data, error, isLoading } = api.useGetBoardsQuery()
+  const { data } = api.useGetBoardsQuery()
 
   // Ensure data is defined and has boards property
   const boards = data?.boards || [] // Fallback to an empty array if boards is undefined

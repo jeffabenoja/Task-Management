@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import mongoose from "mongoose"
 import boardRoutes from "./routes/board_route.js"
 import columnRoutes from "./routes/column_route.js"
+import taskRoutes from "./routes/task_route.js"
 // Load the environment variables into the application
 dotenv.config() // This loads the environment variables from the .env file into process.env
 
@@ -28,6 +29,7 @@ app.listen(7000, () => {
 
 app.use("/api/boards", boardRoutes)
 app.use("/api/column", columnRoutes)
+app.use("/api/task", taskRoutes)
 
 // Middleware to handle errors. If any route or middleware throws an error, it will be caught here.
 // `err` is the error object, and the middleware will send a structured JSON response with error details.

@@ -25,7 +25,7 @@ const Board = () => {
         px-4 py-6 md:px-6 scrollbar-hide'
           ref={columnsRef} // Apply ref to the scrollable container
         >
-          <Column board={board} />
+          <Column columns={board?.columns} toggleModal={toggleModal} />
         </div>
       ) : (
         <div className='p-8 dark:bg-primary-500 h-full w-full flex justify-center items-center'>
