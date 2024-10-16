@@ -2,7 +2,7 @@ import { useState } from "react"
 
 const AddColumnForm = ({ board, toggleModal }) => {
   const [data, setData] = useState({
-    boardId: board?._id || "",
+    boardId: board?._id,
     name: board?.name,
     columns: board?.columns,
   })
@@ -33,8 +33,8 @@ const AddColumnForm = ({ board, toggleModal }) => {
     e.preventDefault()
 
     try {
-      const res = await fetch(`/api/column/create/${board._id}`, {
-        method: "POST",
+      const res = await fetch(`/api/boards/update/${board._id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },

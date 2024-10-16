@@ -17,7 +17,7 @@ const Sidebar = ({ boards, setIsOpen }) => {
   }
   return (
     <>
-      <div className='bg-primary-100 dark:bg-secondary-600 flex flex-col justify-between w-[300px] h-full'>
+      <div className='h-full bg-primary-100 dark:bg-secondary-600 flex flex-col justify-between'>
         <div className='flex flex-col pr-6 py-4'>
           <div className='pl-8 mb-5'>
             <p className='text-secondary-200 tracking-[2.4px]'>
@@ -100,6 +100,7 @@ const Sidebar = ({ boards, setIsOpen }) => {
               </svg>
             </div>
           </div>
+
           {/* Hide Sidebar */}
           <div
             onClick={() => setIsOpen((prev) => !prev)}

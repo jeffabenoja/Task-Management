@@ -1,6 +1,7 @@
 import { errorHandler } from "../../utils/errorHandler.js"
+import mongoose from "mongoose"
 import Board from "../../models/boards_model.js"
-import Column from "../../models/column_model.js"
+import Task from "../../models/task_model.js"
 
 export const board = async (req, res, next) => {
   try {
@@ -18,40 +19,22 @@ export const board = async (req, res, next) => {
       .toLowerCase()
       .replace(/[^a-zA-Z0-9-]/g, "")
 
+    const filteredColumns = columns
+      ? columns
+          .filter((column) => column.name.trim() !== "")
+          .map((c) => ({
+            ...c,
+            _id: new mongoose.Types.ObjectId(),
+            tasks: [],
+          }))
+      : []
+
     // Create a new Board document using the provided data and generated slug
-    const newBoard = new Board({ ...req.body, slug })
+    const newBoard = new Board({ ...req.body, slug, columns: filteredColumns })
     const savedBoard = await newBoard.save()
 
-    let createdColumns = []
-
-    // If columns are provided, map through them and create new columns linked to the board
-    if (columns && columns.length > 0) {
-      createdColumns = await Promise.all(
-        columns.map(async (columnData) => {
-          // Generate a slug for the column name
-          const columnSlug = columnData.name
-            .split(" ")
-            .join("-")
-            .toLowerCase()
-            .replace(/[^a-zA-Z0-9-]/g, "")
-
-          const newColumn = new Column({
-            board_id: savedBoard._id,
-            name: columnData.name,
-            slug: columnSlug,
-          })
-
-          // Save each new column
-          return await newColumn.save()
-        })
-      )
-    }
-
     // Return the newly created board and its columns as a response
-    res.status(201).json({
-      ...savedBoard._doc,
-      columns: createdColumns,
-    })
+    res.status(201).json(savedBoard)
   } catch (error) {
     if (error.code === 11000) {
       console.log(error)
@@ -63,7 +46,7 @@ export const board = async (req, res, next) => {
 
 export const updateBoard = async (req, res, next) => {
   try {
-    const { name, columns, deletedColumns } = req.body
+    const { name, columns } = req.body
 
     // Check if required fields are provided
     if (!name || !columns) {
@@ -77,6 +60,22 @@ export const updateBoard = async (req, res, next) => {
       .toLowerCase()
       .replace(/[^a-zA-Z0-9-]/g, "")
 
+    const filteredColumns = columns
+      ? columns
+          .filter((column) => column.name.trim() !== "")
+          .map((c) => {
+            if (!c._id) {
+              return {
+                ...c,
+                _id: new mongoose.Types.ObjectId(),
+              }
+            }
+            return {
+              ...c,
+            }
+          })
+      : []
+
     // Update board document using the provided data and generated slug
     const updatedBoard = await Board.findByIdAndUpdate(
       req.params.boardId,
@@ -84,6 +83,7 @@ export const updateBoard = async (req, res, next) => {
         $set: {
           name: req.body.name,
           slug,
+          columns: filteredColumns,
         },
       },
       { new: true }
@@ -94,61 +94,8 @@ export const updateBoard = async (req, res, next) => {
       return next(errorHandler(404, "Board not found")) // Handle the case where the board does not exist
     }
 
-    if (deletedColumns && deletedColumns.length > 0) {
-      await Column.deleteMany({ _id: { $in: deletedColumns } })
-    }
-
-    let updatedColumns = []
-
-    // If columns are provided, map through them and create new columns linked to the board
-    if (columns && columns.length > 0) {
-      updatedColumns = await Promise.all(
-        columns.map(async (columnData) => {
-          // Generate a slug for the column name
-          const columnSlug = columnData.name
-            .split(" ")
-            .join("-")
-            .toLowerCase()
-            .replace(/[^a-zA-Z0-9-]/g, "")
-
-          if (columnData._id) {
-            // Update existing column if _id exists
-            const updatedColumn = await Column.findByIdAndUpdate(
-              columnData._id,
-              {
-                $set: {
-                  name: columnData.name,
-                  slug: columnSlug,
-                },
-              },
-              { new: true }
-            )
-
-            // Check if the column was updated successfully
-            if (!updatedColumn) {
-              console.warn(`Column with ID ${columnData._id} not found.`)
-            }
-            return updatedColumn
-          } else {
-            // Create a new column if _id does not exist
-            const newColumn = new Column({
-              board_id: req.params.boardId,
-              name: columnData.name,
-              slug: columnSlug,
-            })
-
-            // Save the new column
-            return await newColumn.save()
-          }
-        })
-      )
-    }
-
     // Return the updated board and its columns as a response
-    res.status(200).json({
-      ...updatedBoard.toObject(),
-      columns: updatedColumns,
-    })
+    res.status(200).json(updatedBoard)
   } catch (error) {
     next(error)
   }
@@ -157,31 +104,70 @@ export const updateBoard = async (req, res, next) => {
 export const getAllBoards = async (req, res, next) => {
   try {
     // Fetch all boards
-    const boards = await Board.find()
+    const boards = await Board.find().lean()
 
     // If no boards are found, return a 404 error
     if (!boards || boards.length === 0) {
       return next(errorHandler(404, "No boards found"))
     }
 
-    // Fetch columns associated with each board
-    const boardsWithColumns = await Promise.all(
+    // Use Promise.all to handle asynchronous fetching of tasks for each column in each board
+    const boardsWithTasks = await Promise.all(
       boards.map(async (board) => {
-        const columns = await Column.find({ board_id: board._id })
-        return { ...board.toObject(), columns } // Convert board to object and add its columns
+        // Fetch tasks for each column in the board
+        const columnsWithTasks = await Promise.all(
+          board.columns.map(async (column) => {
+            const tasks = await Task.find({ columnId: column._id }).lean()
+            return {
+              ...column,
+              tasks, // Add tasks to the column
+            }
+          })
+        )
+
+        return {
+          ...board,
+          columns: columnsWithTasks, // Add columns with their tasks to the board
+        }
       })
     )
 
-    // Count the total number of columns in the collection
-    const totalColumns = await Column.countDocuments()
-    const totalBoards = await Board.countDocuments()
+    // Count the total number of columns and boards
+    // const totalColumns = boards?.columns.length
+    const totalBoards = boards.length
 
-    // Return the boards with their columns and total column count
+    // Return the boards with their columns, and the total counts
     res.status(200).json({
-      boards: boardsWithColumns, // All boards with their associated columns
+      boards: boardsWithTasks,
       totalBoards,
-      totalColumns, // Total number of columns
+      // totalColumns, // Total number of columns
     })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteBoard = async (req, res, next) => {
+  try {
+    // Fetch the board
+    let board = await Board.findById(req.params.boardId).lean()
+    if (!board) {
+      return res.status(404).json({ message: "Board not found" })
+    }
+
+    // Delete tasks associated with each column of the board
+    await Promise.all(
+      board.columns.map(async (column) => {
+        await Task.deleteMany({ columnId: column._id }) // Correct deletion method
+      })
+    )
+
+    // Delete the board
+    await Board.findByIdAndDelete(req.params.boardId)
+
+    res
+      .status(200)
+      .json({ message: "Board and associated tasks deleted successfully" })
   } catch (error) {
     next(error)
   }

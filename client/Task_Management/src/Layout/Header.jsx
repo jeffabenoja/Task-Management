@@ -13,6 +13,7 @@ import AddBoardForm from "../components/modal/AddBoardForm"
 import { useMemo } from "react"
 import EditBoardForm from "../components/modal/EditBoardForm"
 import AddTaskForm from "../components/modal/AddTaskForm"
+import DeleteBoard from "../components/modal/DeleteBoard"
 
 const Header = () => {
   // Use the custom hook to get the current tab
@@ -27,6 +28,7 @@ const Header = () => {
     openEditModal: false,
     ellipsisOpen: false,
     openAddTask: false,
+    openDelete: false,
   })
 
   const { data: boards = [] } = api.useGetBoardsQuery()
@@ -44,11 +46,11 @@ const Header = () => {
   }
 
   return (
-    <div className='relative'>
+    <div className='w-full relative h-[60px] md:h-[80px] lg:h-[96px]'>
       {/* Header */}
-      <div className='w-full inline-flex items-center z-20 bg-primary-100 dark:bg-secondary-600'>
+      <div className='w-full inline-flex h-full items-center z-20 bg-primary-100 dark:bg-secondary-600'>
         {/* Logo Section */}
-        <div className='py-6 pl-4 md:py-8 md:pl-[26px] md:w-[300px]'>
+        <div className='py-6 pl-4 md:py-7 md:pl-[26px] md:w-[300px]'>
           <svg
             width='24'
             height='25'
@@ -104,7 +106,7 @@ const Header = () => {
           )}
         </div>
 
-        <div className='flex-1 md:border-l border-secondary-100 dark:border-secondary-500 py-6 pr-4 md:py-8 md:px-[26px]'>
+        <div className='flex-1 h-full md:border-l border-secondary-100 dark:border-secondary-500 py-6 pr-4 md:py-7 md:px-[26px]'>
           <div className='flex justify-between items-center'>
             <div className='flex gap-2 justify-between items-center'>
               <h1 className='heading-l text-primary-600 dark:text-primary-100'>
@@ -147,7 +149,10 @@ const Header = () => {
           >
             Edit Board
           </span>
-          <span className='cursor-pointer text-secondary-400'>
+          <span
+            className='cursor-pointer text-secondary-400'
+            onClick={() => handleToggle("openDelete")}
+          >
             Delete Board
           </span>
         </div>
@@ -273,6 +278,15 @@ const Header = () => {
           <EditBoardForm
             board={currentBoard}
             toggleModal={() => handleToggle("openEditModal")}
+          />
+        </CustomModal>
+      )}
+
+      {modals.openDelete && (
+        <CustomModal toggleModal={() => handleToggle("openDelete")}>
+          <DeleteBoard
+            board={currentBoard}
+            toggleModal={() => handleToggle("openDelete")}
           />
         </CustomModal>
       )}

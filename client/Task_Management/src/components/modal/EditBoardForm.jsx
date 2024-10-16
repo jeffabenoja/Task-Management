@@ -6,24 +6,6 @@ const EditBoardForm = ({ board, toggleModal }) => {
     columns: board ? board.columns : [],
   })
 
-  // Track deleted columns by their IDs
-  const [deletedColumns, setDeletedColumns] = useState([])
-
-  const handleDeleteColumn = (index) => {
-    if (data.columns.length > 1) {
-      const columnToDelete = data.columns[index]
-
-      // Add column ID to deletedColumns if it has an ID
-      if (columnToDelete._id) {
-        setDeletedColumns((prev) => [...prev, columnToDelete._id])
-      }
-
-      const newColumns = data.columns.filter(
-        (_, colIndex) => colIndex !== index
-      )
-      setData((prevData) => ({ ...prevData, columns: newColumns }))
-    }
-  }
 
   const handleColumnChange = (index, event) => {
     const newColumns = [...data.columns]
@@ -47,7 +29,7 @@ const EditBoardForm = ({ board, toggleModal }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...data, deletedColumns }),
+        body: JSON.stringify(data),
       })
 
       if (!res.ok) {

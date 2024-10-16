@@ -12,12 +12,14 @@ const DashBoard = () => {
 
   const selectedBoard = boards.find((board) => board.slug === tab)
 
-  console.log(selectedBoard)
-
   return (
-    <div className={`h-screen md:flex relative}`}>
+    <div className='flex h-[calc(100vh-60px)] md:h-[calc(100vh-80px)] lg:h-[calc(100vh-96px)]'>
       {/* Sidebar Wrapper */}
-      <div className={`hidden md:block ${isOpen ? "" : "!hidden"}`}>
+      <div
+        className={`hidden md:block w-[300px] h-full shrink-0 ${
+          isOpen ? "" : "!hidden"
+        }`}
+      >
         {/* Sidebar Component */}
         <Sidebar boards={boards} setIsOpen={setIsOpen} />
       </div>
@@ -25,13 +27,13 @@ const DashBoard = () => {
       {/* Main Content */}
       <div
         className={`w-full h-full overflow-hidden border-l border-secondary-100 dark:border-secondary-500 ${
-          isOpen ? "" : "border-none"
+          isOpen ? "w-[calc(100vw-300px)]" : "border-none"
         }`}
       >
         {boards && tab && <Board board={selectedBoard} />}
 
         {boards && boards?.length === 0 && (
-          <div className=' flex justify-center items-center h-full  '>
+          <div className=' flex justify-center items-center'>
             <h1 className='text-secondary-600 text-center mt-4 text-3xl text-bold dark:text-primary-100'>
               Create board
             </h1>
@@ -39,7 +41,7 @@ const DashBoard = () => {
         )}
 
         {!tab && (
-          <div className='flex justify-center items-center h-full  '>
+          <div className='flex justify-center items-center'>
             <h1 className='text-secondary-600 text-center mt-4 text-3xl text-bold dark:text-primary-100'>
               Select board
             </h1>
@@ -47,9 +49,9 @@ const DashBoard = () => {
         )}
       </div>
 
-      {/* Toggle Button for Small Screens */}
+      {/* Show Sidebar */}
       <div
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => setIsOpen(!isOpen)}
         className={`absolute bottom-[32px] group cursor-pointer w-[36px] h-[36px] bg-primary-400 flex items-center justify-center rounded-tr-full rounded-br-full hover:bg-primary-200 ${
           isOpen ? "hidden" : "block"
         }`}

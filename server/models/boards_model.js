@@ -10,6 +10,10 @@ const boardSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    columns: {
+      type: Array,
+      default: [],
+    },
   },
   { timestamps: true }
 )

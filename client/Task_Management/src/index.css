@@ -18,6 +18,11 @@
   --color-secondary-600: rgb(43, 44, 55);
 }
 
+html,
+body {
+  height: 100%; /* Ensure full height on both the html and body */
+}
+
 /*
   1. Use a more-intuitive box-sizing model.
 */
@@ -32,6 +37,8 @@
 */
 * {
   margin: 0;
+  scrollbar-color: var(--color-secondary-500) transparent;
+  scrollbar-width: thin;
 }
 
 /*
@@ -46,6 +53,10 @@ body {
   font-size: 12px;
   font-weight: 500;
   background-color: var(--color-primary-200);
+  max-width: 100vw;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden; /* Hide any overflow beyond the viewport */
 }
 
 /*
@@ -111,9 +122,24 @@ textarea {
   line-height: 1.25;
 }
 
+.h-scrollbar {
+  overflow-x: auto;
+}
+
 /* For smooth horizontal scrolling and optional scrollbar hiding */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 100vh;
+  border: 3px solid #edf2f7;
+}
+
+/* Handle on hover */
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
 }
 
 .scrollbar-hide {

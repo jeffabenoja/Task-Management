@@ -36,7 +36,7 @@ const AddTaskForm = ({ columns, toggleModal }) => {
   }
 
   const handleDropDown = (c) => {
-    setData({ ...data, columnId: c._id || "", status: c.name })
+    setData({ ...data, columnId: c._id, status: c.name })
   }
 
   const handleSubmit = async (e) => {
@@ -133,7 +133,6 @@ const AddTaskForm = ({ columns, toggleModal }) => {
                     onChange={(e) => handleSubtaskChange(index, e)}
                     className='text-black dark:text-primary-100 flex-1 py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
                     focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
-                    required
                   />
                   <span
                     className='cursor-pointer'
