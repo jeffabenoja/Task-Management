@@ -1,10 +1,13 @@
 import { useState } from "react"
+import api from "../../controller/services/api"
 
 const AddBoardForm = ({ toggleModal }) => {
   const [data, setData] = useState({
     name: "",
     columns: [{ name: "Todo" }, { name: "Doing" }],
   })
+
+  const [createBoard, { isLoading, isError }] = api.useCreateBoardMutation()
 
   const handleDeleteColumn = (index) => {
     if (data.columns.length > 1) {
@@ -32,25 +35,35 @@ const AddBoardForm = ({ toggleModal }) => {
     e.preventDefault()
 
     try {
-      const res = await fetch(`/api/boards/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
+      await createBoard(data).unwrap()
 
-      if (!res.ok) {
-        throw new Error("Network response was not ok")
-      }
+      console.log("Successfully added new board")
 
-      const _data = await res.json()
-      console.log("Successfully added new board", _data)
       toggleModal()
     } catch (error) {
       console.error("Error submitting the board:", error)
-      // Optionally: set an error state and display it to the user
     }
+
+    // try {
+    //   const res = await fetch(`/api/boards/create`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(data),
+    //   })
+
+    //   if (!res.ok) {
+    //     throw new Error("Network response was not ok")
+    //   }
+
+    //   const _data = await res.json()
+    //   console.log("Successfully added new board", _data)
+    //   toggleModal()
+    // } catch (error) {
+    //   console.error("Error submitting the board:", error)
+    //   // Optionally: set an error state and display it to the user
+    // }
   }
 
   return (

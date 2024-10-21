@@ -25,7 +25,7 @@ const Sidebar = ({ boards, setIsOpen }) => {
             </p>
           </div>
           {boards.map((board) => (
-            <Link to={`/dashboard?tab=${board.slug}`} key={board._id}>
+            <Link to={`/dashboard?tab=${board?.slug}`} key={board?._id}>
               <div
                 className={`cursor-pointer pl-8 py-3.5 flex gap-4 text-secondary-200 items-center dark:hover:bg-primary-100 hover:bg-primary-200 hover:rounded-tr-full hover:rounded-br-full ${
                   tab === board.slug &&

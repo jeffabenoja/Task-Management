@@ -19,7 +19,7 @@ const Board = ({ board }) => {
         ? fixedColors[index]
         : generateRandomColor()
     })
-  }, [])
+  }, [board?.columns, generateRandomColor])
 
   const toggleModal = () => {
     setOpenModal((prev) => !prev)
@@ -27,7 +27,7 @@ const Board = ({ board }) => {
 
   return (
     <>
-      {board?.columns?.length > 0 ? (
+      {board?.columns?.length > 0 && (
         <div className='w-full h-full overflow-x-auto flex px-4 py-6 md:px-6 gap-6'>
           {board?.columns?.map((c, index) => (
             <div key={c?._id} className='flex flex-col shrink-0 gap-5'>
@@ -62,7 +62,9 @@ const Board = ({ board }) => {
             </h2>
           </div>
         </div>
-      ) : (
+      )}
+
+      {board?.columns?.length === 0 && (
         <div className='p-8 dark:bg-primary-500 w-full h-full flex justify-center items-center'>
           <div className='w-[343px] md:w-[493px] text-center text-secondary-200'>
             <h1 className='heading-l mb-6'>

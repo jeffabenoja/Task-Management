@@ -33,7 +33,7 @@ const DashBoard = () => {
         {boards && tab && <Board board={selectedBoard} />}
 
         {boards && boards?.length === 0 && (
-          <div className=' flex justify-center items-center'>
+          <div className=' flex justify-center items-center h-full'>
             <h1 className='text-secondary-600 text-center mt-4 text-3xl text-bold dark:text-primary-100'>
               Create board
             </h1>
@@ -41,7 +41,7 @@ const DashBoard = () => {
         )}
 
         {!tab && (
-          <div className='flex justify-center items-center'>
+          <div className='flex justify-center items-center h-full'>
             <h1 className='text-secondary-600 text-center mt-4 text-3xl text-bold dark:text-primary-100'>
               Select board
             </h1>

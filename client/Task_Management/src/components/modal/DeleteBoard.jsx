@@ -1,18 +1,33 @@
-import { useState } from "react"
+import api from "../../controller/services/api"
+import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
 
 const DeleteBoard = ({ board, toggleModal }) => {
+  const [deleteBoard, { isLoading, error }] = api.useDeleteBoardMutation()
+  const navigate = useNavigate()
+
+  // Access the current cached data for boards
+  const allBoards = useSelector(
+    (state) => api.endpoints.getBoards.select()(state)?.data || []
+  )
 
   const handleDeleteBoard = async (e) => {
     e.preventDefault()
-
     try {
-      const res = await fetch(`/api/boards/delete/${board?._id}`, {
-        method: "DELETE",
-        
-      })
-      if (res.ok) {
-        console.log("Successfully deleted board")
-        toggleModal()
+      // Perform the deletion
+      await deleteBoard(board?._id).unwrap()
+
+      const updatedBoards = allBoards?.filter((b) => b._id !== board?._id)
+
+      toggleModal()
+
+      // Check if there are still boards left after deletion
+      if (allBoards?.length > 1) {
+        // Navigate to the first available board in the list
+        navigate(`/dashboard?tab=${updatedBoards[0].slug}`)
+      } else {
+        // If no boards are left, navigate to the dashboard
+        navigate("/dashboard")
       }
     } catch (error) {
       console.log(error)

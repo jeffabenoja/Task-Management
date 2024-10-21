@@ -110,7 +110,9 @@ const Header = () => {
           <div className='flex justify-between items-center'>
             <div className='flex gap-2 justify-between items-center'>
               <h1 className='heading-l text-primary-600 dark:text-primary-100'>
-                <span>{currentBoard ? currentBoard?.name : "No Board"}</span>
+                <span>
+                  {currentBoard ? currentBoard?.name : "Kanban Task Management"}
+                </span>
               </h1>
               <img
                 src={modals.isOpen ? chevronUp : chevronDown}

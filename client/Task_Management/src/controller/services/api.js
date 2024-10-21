@@ -5,42 +5,47 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api",
   }),
+  tagTypes: ["Boards"], // Consistently define 'Boards' tag
   endpoints: (builder) => ({
     getBoards: builder.query({
       query: () => "/boards/get",
-      transformResponse: (res) => {
-        console.log(res)
-        return res.boards
-      },
+      transformResponse: (res) => res.boards, // Return the boards directly
+      providesTags: (result) =>
+        result ? [{ type: "Boards", id: "LIST" }] : ["Boards"], // Provide the 'Boards' tag for cache invalidation
+    }),
+
+    createBoard: builder.mutation({
+      query: (board) => ({
+        url: "/boards/create",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: board,
+      }),
+      invalidatesTags: [{ type: "Boards", id: "LIST" }], // Invalidate 'Boards' to refetch the list
+    }),
+
+    updateBoard: builder.mutation({
+      query: (updatedBoard) => ({
+        url: `/boards/update/${updatedBoard.boardId}`,
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: updatedBoard,
+      }),
+      invalidatesTags: [{ type: "Boards", id: "LIST" }], // Invalidate 'Boards' to refetch the list
+    }),
+
+    deleteBoard: builder.mutation({
+      query: (boardId) => ({
+        url: `/boards/delete/${boardId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Boards", id: "LIST" }], // Invalidate 'Boards' to refetch the list
     }),
   }),
 })
 
 export default api
-
-// getProductById: builder.query({
-//   query: (id) => `/products/${id}`,
-// }),
-
-// addNewProduct: builder.mutation({
-//   query: (newProduct) => ({
-//     url: "/products/add",
-//     method: "POST",
-//     body: newProduct,
-//   }),
-// }),
-
-// updateProduct: builder.mutation({
-//   query: (updatedProduct) => ({
-//     url: `/products/${updatedProduct.id}`,
-//     method: "PUT",
-//     body: updatedProduct,
-//   }),
-// }),
-
-// deleteProduct: builder.mutation({
-//   query: (id) => ({
-//     url: `/products/${id}`,
-//     method: "DELETE",
-//   }),
-// }),
