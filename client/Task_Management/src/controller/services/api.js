@@ -45,6 +45,50 @@ const api = createApi({
       }),
       invalidatesTags: [{ type: "Boards", id: "LIST" }], // Invalidate 'Boards' to refetch the list
     }),
+
+    createTask: builder.mutation({
+      query: (task) => ({
+        url: "/task/create",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: task,
+      }),
+      invalidatesTags: [{ type: "Boards", id: "LIST" }], // Invalidate 'Boards' to refetch the list
+    }),
+
+    updatedSubtask: builder.mutation({
+      query: (subtask) => ({
+        url: `/task/updateSubtask/${subtask.id}`,
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: subtask,
+      }),
+      async onQueryStarted({ id, subtasks }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled
+
+          dispatch(
+            api.util.updateQueryData("getBoards", undefined, (draft) => {
+              const task = draft
+                .flatMap(
+                  (board) => board.columns.flatMap((col) => col.tasks) // Flatten all tasks from all columns
+                )
+                .find((task) => task._id === id) // Find the specific task by id
+
+              if (task) {
+                task.subtasks = subtasks // Update subtasks if the task is found
+              }
+            })
+          )
+        } catch (error) {
+          console.error("Error updating subtask:", error)
+        }
+      },
+    }),
   }),
 })
 

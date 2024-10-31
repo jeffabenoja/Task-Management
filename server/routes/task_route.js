@@ -1,8 +1,9 @@
 import express from "express"
-import { task } from "../controllers/services/task.js"
+import { task, updateSubtasks } from "../controllers/services/task.js"
 
 const router = express.Router()
 
 router.post("/create", task)
+router.put("/updateSubtask/:taskId", updateSubtasks)
 
 export default router

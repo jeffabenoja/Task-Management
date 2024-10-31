@@ -155,3 +155,7 @@ textarea {
 .snaps-inline > * {
   scroll-snap-align: start;
 }
+
+input[type="checkbox"]:checked {
+  accent-color: var(--color-primary-400);
+}

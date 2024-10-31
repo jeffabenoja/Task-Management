@@ -47,7 +47,7 @@ const Board = ({ board }) => {
               >
                 {/* Column Tasks */}
                 {c?.tasks?.map((t) => (
-                  <Card task={t} key={t._id} />
+                  <Card task={t} key={t._id} columns={board?.columns} />
                 ))}
               </div>
             </div>

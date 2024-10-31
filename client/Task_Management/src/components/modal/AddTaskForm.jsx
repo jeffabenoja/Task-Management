@@ -1,6 +1,7 @@
 import { useState } from "react"
 import chevronUp from "../../assets/icon-chevron-up.svg"
 import chevronDown from "../../assets/icon-chevron-down.svg"
+import api from "../../controller/services/api"
 
 const AddTaskForm = ({ columns, toggleModal }) => {
   const [data, setData] = useState({
@@ -13,6 +14,7 @@ const AddTaskForm = ({ columns, toggleModal }) => {
     ],
     status: columns[0]?.name,
   })
+  const [createTask, { isLoading, error }] = api.useCreateTaskMutation()
   const [dropDown, setDropDown] = useState(false)
 
   const handleDeleteSubtask = (index) => {
@@ -43,24 +45,11 @@ const AddTaskForm = ({ columns, toggleModal }) => {
     e.preventDefault()
 
     try {
-      const res = await fetch(`/api/task/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-
-      if (!res.ok) {
-        throw new Error("Network response was not ok")
-      }
-
-      const _data = await res.json()
-      console.log("Successfully added new task", _data)
+      await createTask(data).unwrap()
+      console.log("Successfully added new task", data)
       toggleModal()
     } catch (error) {
       console.error("Error submitting the task:", error)
-      // Optionally: set an error state and display it to the user
     }
   }
 
