@@ -5,28 +5,27 @@ import api from "../controller/services/api"
 
 const Card = ({ task, columns }) => {
   const [openModal, setOpenModal] = useState(false)
-
-  // Lift task state to the Card component
   const [currentTask, setCurrentTask] = useState(task)
+  const [updateSubTask, { isLoading, error }] = api.useUpdateSubtaskMutation()
 
-  const [updatedSubtask, { isLoading, error }] = api.useUpdatedSubtaskMutation()
-
-  const toggleModal = () => {
+  const toggleModal = async () => {
+    if (openModal) {
+      // Only update subtasks when closing the modal
+      try {
+        await updateSubTask({
+          id: task?._id,
+          subtasks: currentTask.subtasks,
+        }).unwrap()
+      } catch (error) {
+        console.log("Error updating subtasks:", error)
+      }
+    }
     setOpenModal((prev) => !prev)
   }
 
-  // This function will be passed to EditTaskForm to update the task state
-  const handleTaskUpdate = async (updatedTask) => {
-    try {
-      setCurrentTask(updatedTask)
-
-      await updatedSubtask({
-        id: task?._id,
-        subtasks: updatedTask.subtasks,
-      }).unwrap()
-    } catch (error) {
-      console.log(error)
-    }
+  // Function to update task state when subtasks change
+  const handleTaskUpdate = (updatedTask) => {
+    setCurrentTask(updatedTask)
   }
 
   return (

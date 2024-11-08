@@ -46,6 +46,7 @@ const api = createApi({
       invalidatesTags: [{ type: "Boards", id: "LIST" }], // Invalidate 'Boards' to refetch the list
     }),
 
+    // Task API
     createTask: builder.mutation({
       query: (task) => ({
         url: "/task/create",
@@ -58,7 +59,7 @@ const api = createApi({
       invalidatesTags: [{ type: "Boards", id: "LIST" }], // Invalidate 'Boards' to refetch the list
     }),
 
-    updatedSubtask: builder.mutation({
+    updateSubtask: builder.mutation({
       query: (subtask) => ({
         url: `/task/updateSubtask/${subtask.id}`,
         method: "PUT",

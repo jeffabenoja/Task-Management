@@ -11,8 +11,11 @@ const EditTaskForm = ({ task, columns, onTaskUpdate }) => {
     status: task?.status,
     subtasks: task?.subtasks,
     columns: columns ? columns : [],
+    columnId: task?.columnId,
   })
   const [dropDown, setDropDown] = useState(false)
+
+  console.log(data)
 
   // Handle checkbox change
   const handleCheckboxChange = (index) => {
@@ -23,14 +26,15 @@ const EditTaskForm = ({ task, columns, onTaskUpdate }) => {
         : { ...subtask }
     )
 
-    // Update the state
     const updatedTask = { ...data, subtasks: updatedSubtasks }
-
-    // Update the state
     setData(updatedTask)
 
     // Call the parent's update function
     onTaskUpdate(updatedTask)
+  }
+
+  const handleDropDown = (c) => {
+    setData({ ...data, columnId: c._id, status: c.name })
   }
 
   return (
@@ -52,15 +56,15 @@ const EditTaskForm = ({ task, columns, onTaskUpdate }) => {
           <div className='flex flex-col gap-2'>
             {data.subtasks.map((subtask, index) => (
               <label
-                htmlFor={`subtask-${index}`} // Updated id for uniqueness
+                htmlFor={`subtask-${index}`}
                 className='pl-3 pr-2 py-3.5 flex items-center gap-4 bg-secondary-100 dark:bg-primary-500 cursor-pointer rounded'
                 key={`subtask-${index}`}
               >
                 <input
                   type='checkbox'
-                  id={`subtask-${index}`} // Updated id for uniqueness
+                  id={`subtask-${index}`}
                   checked={subtask.isCompleted}
-                  onChange={() => handleCheckboxChange(index)} // Handle change
+                  onChange={() => handleCheckboxChange(index)}
                   className='checked:bg-primary-400 checked:border-primary-400 checked:text-primary-400  w-[16px] h-[16px] border border-secondary-200 outline-transparent'
                 />
                 <span className='font-bold'>{subtask.title}</span>

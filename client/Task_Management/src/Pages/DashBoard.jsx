@@ -1,8 +1,8 @@
-import { useFromUrlParams } from "../hooks/useFromUrl"
 import { useState } from "react"
 import Board from "../components/Board"
 import Sidebar from "../components/Sidebar"
 import api from "../controller/services/api"
+import { useFromUrlParams } from "../hooks/useFromUrl"
 
 const DashBoard = () => {
   const { searchTerm: tab } = useFromUrlParams("tab")
