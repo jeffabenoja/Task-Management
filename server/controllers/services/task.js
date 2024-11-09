@@ -28,7 +28,8 @@ export const task = async (req, res, next) => {
 
 export const updateSubtasks = async (req, res, next) => {
   try {
-    const { id, subtasks } = req.body
+    const { id, subtasks, status, columnId } = req.body
+
 
     if (id !== req.params.taskId) {
       errorHandler("You're not allowed to make this update")
@@ -37,7 +38,13 @@ export const updateSubtasks = async (req, res, next) => {
     // Avoid using the function name here
     const updatedTask = await Task.findByIdAndUpdate(
       req.params.taskId,
-      { subtasks }, // Update only the subtasks field
+      {
+        $set: {
+          columnId: columnId,
+          status: status,
+          subtasks: subtasks,
+        },
+      }, // Update only the subtasks field
       { new: true } // Return the updated document
     )
 
@@ -45,6 +52,7 @@ export const updateSubtasks = async (req, res, next) => {
     if (!updatedTask) {
       return res.status(404).json({ message: "Task not found" })
     }
+
 
     res.status(200).json(updatedTask)
   } catch (error) {

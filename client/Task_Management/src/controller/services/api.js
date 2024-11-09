@@ -5,13 +5,12 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api",
   }),
-  tagTypes: ["Boards"], // Consistently define 'Boards' tag
+  tagTypes: ["Boards"],
   endpoints: (builder) => ({
     getBoards: builder.query({
       query: () => "/boards/get",
-      transformResponse: (res) => res.boards, // Return the boards directly
-      providesTags: (result) =>
-        result ? [{ type: "Boards", id: "LIST" }] : ["Boards"], // Provide the 'Boards' tag for cache invalidation
+      transformResponse: (res) => res.boards,
+      providesTags: [{ type: "Boards", id: "LIST" }],
     }),
 
     createBoard: builder.mutation({
@@ -23,7 +22,7 @@ const api = createApi({
         },
         body: board,
       }),
-      invalidatesTags: [{ type: "Boards", id: "LIST" }], // Invalidate 'Boards' to refetch the list
+      invalidatesTags: [{ type: "Boards", id: "LIST" }],
     }),
 
     updateBoard: builder.mutation({
@@ -35,7 +34,7 @@ const api = createApi({
         },
         body: updatedBoard,
       }),
-      invalidatesTags: [{ type: "Boards", id: "LIST" }], // Invalidate 'Boards' to refetch the list
+      invalidatesTags: [{ type: "Boards", id: "LIST" }],
     }),
 
     deleteBoard: builder.mutation({
@@ -43,7 +42,7 @@ const api = createApi({
         url: `/boards/delete/${boardId}`,
         method: "DELETE",
       }),
-      invalidatesTags: [{ type: "Boards", id: "LIST" }], // Invalidate 'Boards' to refetch the list
+      invalidatesTags: [{ type: "Boards", id: "LIST" }],
     }),
 
     // Task API
@@ -56,39 +55,19 @@ const api = createApi({
         },
         body: task,
       }),
-      invalidatesTags: [{ type: "Boards", id: "LIST" }], // Invalidate 'Boards' to refetch the list
+      invalidatesTags: [{ type: "Boards", id: "LIST" }],
     }),
 
-    updateSubtask: builder.mutation({
-      query: (subtask) => ({
-        url: `/task/updateSubtask/${subtask.id}`,
+    updateTask: builder.mutation({
+      query: (task) => ({
+        url: `task/updateSubtask/${task._id}`,
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: subtask,
+        body: task,
       }),
-      async onQueryStarted({ id, subtasks }, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled
-
-          dispatch(
-            api.util.updateQueryData("getBoards", undefined, (draft) => {
-              const task = draft
-                .flatMap(
-                  (board) => board.columns.flatMap((col) => col.tasks) // Flatten all tasks from all columns
-                )
-                .find((task) => task._id === id) // Find the specific task by id
-
-              if (task) {
-                task.subtasks = subtasks // Update subtasks if the task is found
-              }
-            })
-          )
-        } catch (error) {
-          console.error("Error updating subtask:", error)
-        }
-      },
+      invalidatesTags: [{ type: "Boards", id: "LIST" }],
     }),
   }),
 })

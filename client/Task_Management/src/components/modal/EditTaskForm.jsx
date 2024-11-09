@@ -1,60 +1,75 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import ellipsis from "../../assets/icon-vertical-ellipsis.svg"
 import chevronUp from "../../assets/icon-chevron-up.svg"
 import chevronDown from "../../assets/icon-chevron-down.svg"
+import api from "../../controller/services/api"
 
-const EditTaskForm = ({ task, columns, onTaskUpdate }) => {
-  const [data, setData] = useState({
-    id: task?._id,
-    title: task?.title,
-    description: task?.description,
-    status: task?.status,
-    subtasks: task?.subtasks,
-    columns: columns ? columns : [],
-    columnId: task?.columnId,
-  })
+const EditTaskForm = ({ task, columns, onSubtaskUpdate, toggleModal }) => {
+  const [updateTask] = api.useUpdateTaskMutation()
   const [dropDown, setDropDown] = useState(false)
+  const [taskData, setTaskData] = useState({
+    ...task,
+  })
+  const [columnData, setColumnData] = useState({
+    columns: columns,
+  })
 
-  console.log(data)
-
-  // Handle checkbox change
   const handleCheckboxChange = (index) => {
     // Create a copy of the subtasks
-    const updatedSubtasks = data.subtasks.map((subtask, i) =>
+    const updatedSubtasks = taskData.subtasks.map((subtask, i) =>
       i === index
         ? { ...subtask, isCompleted: !subtask.isCompleted }
         : { ...subtask }
     )
 
-    const updatedTask = { ...data, subtasks: updatedSubtasks }
-    setData(updatedTask)
+    const updatedSubTask = { ...taskData, subtasks: updatedSubtasks }
 
-    // Call the parent's update function
-    onTaskUpdate(updatedTask)
+    setTaskData(updatedSubTask)
   }
 
-  const handleDropDown = (c) => {
-    setData({ ...data, columnId: c._id, status: c.name })
+  const handleDropDown = (column) => {
+    setTaskData((prev) => ({
+      ...prev,
+      status: column.name,
+      columnId: column._id,
+    }))
+    setDropDown(false)
+  }
+
+  const handleUpdate = async () => {
+    try {
+      await onSubtaskUpdate(taskData)
+      await updateTask({
+        _id: taskData._id,
+        subtasks: taskData.subtasks,
+        ...taskData,
+      })
+      toggleModal()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
     <>
       <div className='flex flex-col gap-6'>
         <div className='flex justify-between items-center gap-4'>
-          <h3 className='heading-l'>{data.title}</h3>
+          <h3 className='heading-l'>{taskData.title}</h3>
           <img src={ellipsis} alt='' className='cursor-pointer' />
         </div>
         <p className='text-secondary-200 body-l !font-medium'>
-          {data.description ? data.description : "No description provided"}
+          {taskData.description
+            ? taskData.description
+            : "No description provided"}
         </p>
         <div className='flex flex-col'>
           <p className='body-l text-secondary-200 mb-4'>
             Subtask{" "}
-            {data.subtasks.filter((subtask) => subtask.isCompleted).length} of{" "}
-            {data.subtasks.length}
+            {taskData.subtasks.filter((subtask) => subtask.isCompleted).length}{" "}
+            of {taskData.subtasks.length}
           </p>
           <div className='flex flex-col gap-2'>
-            {data.subtasks.map((subtask, index) => (
+            {taskData.subtasks.map((subtask, index) => (
               <label
                 htmlFor={`subtask-${index}`}
                 className='pl-3 pr-2 py-3.5 flex items-center gap-4 bg-secondary-100 dark:bg-primary-500 cursor-pointer rounded'
@@ -79,7 +94,7 @@ const EditTaskForm = ({ task, columns, onTaskUpdate }) => {
         >
           <div className='flex items-center justify-between w-full cursor-pointer '>
             <span className='text-black dark:text-primary-100'>
-              {data.status}
+              {taskData.status}
             </span>
 
             <img
@@ -95,7 +110,7 @@ const EditTaskForm = ({ task, columns, onTaskUpdate }) => {
               className='absolute overflow-y-auto left-0 rounded-lg py-3 md:py-4 text-secondary-200 bg-primary-100 w-full h-[100px] scrollbar-hide'
               style={{ top: "calc(100% + 10px)" }}
             >
-              {data.columns.map((c) => (
+              {columnData.columns.map((c) => (
                 <div
                   key={c.name}
                   onClick={() => handleDropDown(c)}
@@ -107,6 +122,13 @@ const EditTaskForm = ({ task, columns, onTaskUpdate }) => {
             </div>
           )}
         </div>
+        <button
+          className='bg-primary-400 rounded-[20px] py-2'
+          type='button'
+          onClick={handleUpdate}
+        >
+          <p className='text-primary-100 body-l'>Update Task</p>
+        </button>
       </div>
     </>
   )

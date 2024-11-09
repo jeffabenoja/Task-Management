@@ -16,6 +16,13 @@ const EditBoardForm = ({ board, toggleModal }) => {
     setData((prevData) => ({ ...prevData, columns: newColumns }))
   }
 
+  const handleDeleteColumn = (index) => {
+    if (data.columns.length > 1) {
+      const columns = data.columns.filter((_, subIndex) => subIndex !== index)
+      setData((prevData) => ({ ...prevData, columns: columns }))
+    }
+  }
+
   const addNewColumn = () => {
     setData((prevData) => ({
       ...prevData,

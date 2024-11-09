@@ -69,6 +69,15 @@ export const updateBoard = async (req, res, next) => {
       .toLowerCase()
       .replace(/[^a-zA-Z0-9-]/g, "")
 
+    const generateRandomColor = () => {
+      const letters = "0123456789ABCDEF"
+      let color = "#"
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)]
+      }
+      return color
+    }
+
     const filteredColumns = columns
       ? columns
           .filter((column) => column.name.trim() !== "")
@@ -77,6 +86,7 @@ export const updateBoard = async (req, res, next) => {
               return {
                 ...c,
                 _id: new mongoose.Types.ObjectId(),
+                color: generateRandomColor(),
               }
             }
             return {
@@ -104,7 +114,7 @@ export const updateBoard = async (req, res, next) => {
     }
 
     // Return the updated board and its columns as a response
-    res.status(200).json(updatedBoard)
+    res.status(200).json({ message: "Successfully Updated", updatedBoard })
   } catch (error) {
     next(error)
   }
@@ -177,6 +187,26 @@ export const deleteBoard = async (req, res, next) => {
     res
       .status(200)
       .json({ message: "Board and associated tasks deleted successfully" })
+  } catch (error) {
+    next(error)
+  }
+}
+export const updateColumn = async (req, res, next) => {
+  try {
+    const { boardId, columns } = req.body
+    const updatedBoard = await Board.findByIdAndUpdate(
+      boardId,
+      { $set: { columns } },
+      { new: true }
+    )
+
+    if (!updatedBoard) {
+      return next(errorHandler(404, "Board not found"))
+    }
+
+    console.log(updatedBoard)
+
+    res.status(200).json(updatedBoard)
   } catch (error) {
     next(error)
   }

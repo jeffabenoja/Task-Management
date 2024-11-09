@@ -1,30 +1,17 @@
 import { useState } from "react"
 import CustomModal from "./modal/CustomModal"
 import EditTaskForm from "./modal/EditTaskForm"
-import api from "../controller/services/api"
 
-const Card = ({ task, columns }) => {
+const Card = ({ task, columns, boardId }) => {
   const [openModal, setOpenModal] = useState(false)
   const [currentTask, setCurrentTask] = useState(task)
-  const [updateSubTask, { isLoading, error }] = api.useUpdateSubtaskMutation()
 
   const toggleModal = async () => {
-    if (openModal) {
-      // Only update subtasks when closing the modal
-      try {
-        await updateSubTask({
-          id: task?._id,
-          subtasks: currentTask.subtasks,
-        }).unwrap()
-      } catch (error) {
-        console.log("Error updating subtasks:", error)
-      }
-    }
     setOpenModal((prev) => !prev)
   }
 
   // Function to update task state when subtasks change
-  const handleTaskUpdate = (updatedTask) => {
+  const handleSubTaskUpdate = (updatedTask) => {
     setCurrentTask(updatedTask)
   }
 
@@ -47,7 +34,8 @@ const Card = ({ task, columns }) => {
           <EditTaskForm
             task={currentTask}
             columns={columns}
-            onTaskUpdate={handleTaskUpdate}
+            onSubtaskUpdate={handleSubTaskUpdate}
+            toggleModal={toggleModal}
           />
         </CustomModal>
       )}

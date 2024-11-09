@@ -1,6 +1,8 @@
 import { useState } from "react"
+import api from "../../controller/services/api"
 
 const AddColumnForm = ({ board, toggleModal }) => {
+  const [updatedBoard, { isLoading, isError }] = api.useUpdateBoardMutation()
   const [data, setData] = useState({
     boardId: board?._id,
     name: board?.name,
@@ -33,20 +35,8 @@ const AddColumnForm = ({ board, toggleModal }) => {
     e.preventDefault()
 
     try {
-      const res = await fetch(`/api/boards/update/${board._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-
-      if (!res.ok) {
-        throw new Error("Network response was not ok")
-      }
-
-      const _data = await res.json()
-      console.log("Successfully updated column", _data)
+      await updatedBoard(data).unwrap()
+      console.log("Successfully updated column")
       toggleModal()
     } catch (error) {
       console.error("Error submitting the column:", error)

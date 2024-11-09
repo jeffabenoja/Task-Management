@@ -2,7 +2,6 @@ import { useState } from "react"
 import CustomModal from "./modal/CustomModal"
 import AddColumnForm from "./modal/AddColumnForm"
 import { useGenerateColors } from "../hooks/useGenerateColors"
-import { useMemo } from "react"
 import Card from "./Card"
 
 const Board = ({ board }) => {
@@ -12,14 +11,14 @@ const Board = ({ board }) => {
   const fixedColors = ["#49C4E5", "#67E2AE", "#8471F2"]
 
   // Generate an array of colors based on the number of columns
-  const columnColors = useMemo(() => {
-    if (!board?.columns) return [] // Check if board.columns exists
-    return board?.columns?.map((_, index) => {
-      return index < fixedColors.length
-        ? fixedColors[index]
-        : generateRandomColor()
-    })
-  }, [board?.columns, generateRandomColor])
+  // const columnColors = useMemo(() => {
+  //   if (!board?.columns) return [] // Check if board.columns exists
+  //   return board?.columns?.map((_, index) => {
+  //     return index < fixedColors.length
+  //       ? fixedColors[index]
+  //       : generateRandomColor()
+  //   })
+  // }, [board?.columns, generateRandomColor])
 
   const toggleModal = () => {
     setOpenModal((prev) => !prev)
@@ -30,24 +29,26 @@ const Board = ({ board }) => {
       {board?.columns?.length > 0 && (
         <div className='w-full h-full overflow-x-auto flex px-4 py-6 md:px-6 gap-6'>
           {board?.columns?.map((c, index) => (
-            <div key={c?._id} className='flex flex-col shrink-0 gap-5'>
+            <div key={c?._id || index} className='flex flex-col shrink-0 gap-5'>
               {/* Column Header */}
               <div className='flex gap-3 items-center text-secondary-200 '>
                 <div
                   className='w-[15px] h-[15px] rounded-full'
-                  style={{ backgroundColor: columnColors[index] }}
+                  style={{ backgroundColor: c.color }}
                 ></div>
                 <h2 className='text-secondary-200 font-bold text-xs tracking-[2.4px] uppercase'>
                   {c?.name} <span>({c?.tasks?.length})</span>
                 </h2>
               </div>
-              <div
-                // key={c._id}
-                className=' h-full w-[280px] flex flex-col gap-5'
-              >
+              <div className='h-full w-[280px] flex flex-col gap-5'>
                 {/* Column Tasks */}
-                {c?.tasks?.map((t) => (
-                  <Card task={t} key={t._id} columns={board?.columns} />
+                {c?.tasks?.map((t, taskIndex) => (
+                  <Card
+                    task={t}
+                    key={t._id || taskIndex}
+                    columns={board?.columns}
+                    boardId={board?._id}
+                  />
                 ))}
               </div>
             </div>

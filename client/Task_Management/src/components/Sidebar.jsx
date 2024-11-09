@@ -45,7 +45,7 @@ const Sidebar = ({ boards, setIsOpen }) => {
                     fill='#828FA3'
                   />
                 </svg>
-                <h1 className='heading-m'>{board.name}</h1>
+                <h1 className='heading-m truncate'>{board.name}</h1>
               </div>
             </Link>
           ))}
