@@ -3,20 +3,20 @@ import mongoose from "mongoose"
 const userSchema = new mongoose.Schema(
   {
     firstname: {
-      type: string,
+      type: String,
       required: true,
     },
     lastname: {
-      type: string,
+      type: String,
       required: true,
     },
     email: {
-      type: string,
+      type: String,
       required: true,
       unique: true,
     },
     password: {
-      type: string,
+      type: String,
       required: true,
       unique: true,
     },
@@ -27,4 +27,4 @@ const userSchema = new mongoose.Schema(
 
 const User = mongoose.model("User", userSchema)
 
-export default Task
+export default User
