@@ -34,8 +34,8 @@ const DashBoard = () => {
 
         {boards && boards?.length === 0 && (
           <div className=' flex justify-center items-center h-full'>
-            <h1 className='text-secondary-600 text-center mt-4 text-3xl text-bold dark:text-primary-100'>
-              Create board
+            <h1 className='text-secondary-600 text-center mt-4 heading-xl !text-5xl text-bold dark:text-primary-100 tracking-wider'>
+              NO EXISTING BOARD
             </h1>
           </div>
         )}

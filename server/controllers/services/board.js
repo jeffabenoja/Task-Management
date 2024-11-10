@@ -126,7 +126,7 @@ export const getAllBoards = async (req, res, next) => {
     const boards = await Board.find().lean()
 
     // If no boards are found, return a 404 error
-    if (!boards || boards.length === 0) {
+    if (!boards) {
       return next(errorHandler(404, "No boards found"))
     }
 

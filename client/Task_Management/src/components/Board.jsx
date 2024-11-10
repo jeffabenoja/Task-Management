@@ -1,24 +1,10 @@
 import { useState } from "react"
 import CustomModal from "./modal/CustomModal"
 import AddColumnForm from "./modal/AddColumnForm"
-import { useGenerateColors } from "../hooks/useGenerateColors"
 import Card from "./Card"
 
 const Board = ({ board }) => {
   const [openModal, setOpenModal] = useState(false)
-
-  const generateRandomColor = useGenerateColors()
-  const fixedColors = ["#49C4E5", "#67E2AE", "#8471F2"]
-
-  // Generate an array of colors based on the number of columns
-  // const columnColors = useMemo(() => {
-  //   if (!board?.columns) return [] // Check if board.columns exists
-  //   return board?.columns?.map((_, index) => {
-  //     return index < fixedColors.length
-  //       ? fixedColors[index]
-  //       : generateRandomColor()
-  //   })
-  // }, [board?.columns, generateRandomColor])
 
   const toggleModal = () => {
     setOpenModal((prev) => !prev)

@@ -109,9 +109,9 @@ const Header = () => {
         <div className='flex-1 h-full md:border-l border-secondary-100 dark:border-secondary-500 py-6 pr-4 md:py-7 md:px-[26px]'>
           <div className='flex justify-between items-center'>
             <div className='flex gap-2 justify-between items-center'>
-              <h1 className='heading-l text-primary-600 dark:text-primary-100'>
+              <h1 className='heading-l text-primary-600 dark:text-primary-100 uppercase'>
                 <span>
-                  {currentBoard ? currentBoard?.name : "Kanban Task Management"}
+                  {currentBoard ? currentBoard?.name : "Task Management"}
                 </span>
               </h1>
               <img
