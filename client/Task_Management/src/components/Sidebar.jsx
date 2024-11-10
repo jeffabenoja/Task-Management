@@ -36,7 +36,7 @@ const Sidebar = ({ boards, setIsOpen }) => {
                   width='16'
                   height='16'
                   xmlns='http://www.w3.org/2000/svg'
-                  className={`${
+                  className={`w-[16px] shrink-0 ${
                     tab === board.slug ? "filter invert brightness-0" : ""
                   }`}
                 >
@@ -45,7 +45,7 @@ const Sidebar = ({ boards, setIsOpen }) => {
                     fill='#828FA3'
                   />
                 </svg>
-                <h1 className='heading-m truncate'>{board.name}</h1>
+                <h1 className='heading-m  truncate'>{board.name}</h1>
               </div>
             </Link>
           ))}

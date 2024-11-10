@@ -139,27 +139,23 @@ export const getAllBoards = async (req, res, next) => {
             const tasks = await Task.find({ columnId: column._id }).lean()
             return {
               ...column,
-              tasks, // Add tasks to the column
+              tasks,
             }
           })
         )
 
         return {
           ...board,
-          columns: columnsWithTasks, // Add columns with their tasks to the board
+          columns: columnsWithTasks,
         }
       })
     )
 
-    // Count the total number of columns and boards
-    // const totalColumns = boards?.columns.length
     const totalBoards = boards.length
 
-    // Return the boards with their columns, and the total counts
     res.status(200).json({
       boards: boardsWithTasks,
       totalBoards,
-      // totalColumns, // Total number of columns
     })
   } catch (error) {
     next(error)

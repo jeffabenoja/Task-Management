@@ -69,6 +69,14 @@ const api = createApi({
       }),
       invalidatesTags: [{ type: "Boards", id: "LIST" }],
     }),
+
+    deleteTask: builder.mutation({
+      query: (taskId) => ({
+        url: `task/delete/${taskId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Boards", id: "LIST" }],
+    }),
   }),
 })
 

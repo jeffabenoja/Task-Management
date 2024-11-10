@@ -28,8 +28,7 @@ export const task = async (req, res, next) => {
 
 export const updateSubtasks = async (req, res, next) => {
   try {
-    const { id, subtasks, status, columnId } = req.body
-
+    const { title, description, id, subtasks, status, columnId } = req.body
 
     if (id !== req.params.taskId) {
       errorHandler("You're not allowed to make this update")
@@ -41,6 +40,8 @@ export const updateSubtasks = async (req, res, next) => {
       {
         $set: {
           columnId: columnId,
+          title: title,
+          description: description,
           status: status,
           subtasks: subtasks,
         },
@@ -53,8 +54,26 @@ export const updateSubtasks = async (req, res, next) => {
       return res.status(404).json({ message: "Task not found" })
     }
 
-
     res.status(200).json(updatedTask)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteTask = async (req, res, next) => {
+  try {
+    // Fetch the board
+    let task = await Task.findById(req.params.taskId).lean()
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" })
+    }
+
+    // Delete the Task
+    await Task.findByIdAndDelete(req.params.taskId)
+
+    res
+      .status(200)
+      .json({ message: "Board and associated tasks deleted successfully" })
   } catch (error) {
     next(error)
   }

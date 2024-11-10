@@ -1,9 +1,9 @@
 import api from "../../controller/services/api"
 import { useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 
 const DeleteBoard = ({ board, toggleModal }) => {
-  const [deleteBoard, { isLoading, error }] = api.useDeleteBoardMutation()
+  const [deleteBoard] = api.useDeleteBoardMutation()
   const navigate = useNavigate()
 
   // Access the current cached data for boards
