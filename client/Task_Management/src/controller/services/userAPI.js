@@ -16,6 +16,16 @@ const userAPI = createApi({
         body: user,
       }),
     }),
+    signInUser: builder.mutation({
+      query: (user) => ({
+        url: "/auth/login",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: user,
+      }),
+    }),
   }),
 })
 

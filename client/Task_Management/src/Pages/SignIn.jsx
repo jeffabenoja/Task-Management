@@ -6,20 +6,19 @@ import { Link, useNavigate } from "react-router-dom"
 import userAPI from "../controller/services/userAPI"
 
 const schema = yup.object().shape({
-  firstname: yup.string().required("First name is required"),
-  lastname: yup.string().required("Last name is required"),
   email: yup
     .string()
     .email("Invalid email format")
     .required("Email is required"),
   password: yup
     .string()
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
 })
 
-const SignUp = () => {
-  const [newUser, { isLoading, error }] = userAPI.useNewUserMutation()
+const SignIn = () => {
+  const [signInUser, { isLoading, error }] = userAPI.useSignInUserMutation()
+
   const navigate = useNavigate()
 
   const {
@@ -33,9 +32,9 @@ const SignUp = () => {
   const onSubmit = async (formData) => {
     console.log(formData)
     try {
-      const response = await newUser(formData).unwrap()
+      const response = await signInUser(formData).unwrap()
       if (response.success) {
-        navigate("/sign-in")
+        navigate("/dashboard")
       }
     } catch (error) {
       console.log(error.data.message)
@@ -63,30 +62,6 @@ const SignUp = () => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <div>
-              <label htmlFor='firstname'>First Name</label>
-              <input
-                type='text'
-                {...register("firstname")}
-                className='w-full outline-none border border-[#93A27B] focus:ring-1 focus:ring-[#93A27B] focus:border-[#93A27B] active:border-[#93A27B] py-2.5 px-4 mt-2 rounded'
-                placeholder='First Name'
-              />
-              {errors.firstname && (
-                <p className='text-red-500'>{errors.firstname.message}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor='lastname'>Last Name</label>
-              <input
-                type='text'
-                {...register("lastname")}
-                className='w-full outline-none border border-[#93A27B] focus:ring-1 focus:ring-[#93A27B] focus:border-[#93A27B] active:border-[#93A27B] py-2.5 px-4 mt-2 rounded'
-                placeholder='Last Name'
-              />
-              {errors.lastname && (
-                <p className='text-red-500'>{errors.lastname.message}</p>
-              )}
-            </div>
-            <div>
               <label htmlFor='email'>Email Address</label>
               <input
                 type='email'
@@ -104,7 +79,7 @@ const SignUp = () => {
                 type='password'
                 {...register("password")}
                 className='w-full outline-none border border-[#93A27B] focus:ring-1 focus:ring-[#93A27B] focus:border-[#93A27B] active:border-[#93A27B] py-2.5 px-4 mt-2 rounded'
-                placeholder='Password'
+                placeholder='********'
               />
               {errors.password && (
                 <p className='text-red-500'>{errors.password.message}</p>
@@ -121,14 +96,14 @@ const SignUp = () => {
                   <span className='ml-2 text-xs'>Loading...</span>
                 </>
               ) : (
-                "Sign Up"
+                "Sign In"
               )}
             </button>
           </form>
           <div className='flex gap-2 text-sm mt-5'>
-            <span>Have an account?</span>
-            <Link to='/sign-in' className='text-[#112F1B]'>
-              Sign In
+            <span>Don't have an account?</span>
+            <Link to='/sign-up' className='text-[#112F1B]'>
+              Sign Up
             </Link>
           </div>
           {error && (
@@ -142,4 +117,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default SignIn
