@@ -18,6 +18,15 @@ export default {
         "secondary-500": "var(--color-secondary-500)",
         "secondary-600": "var(--color-secondary-600)",
       },
+      animation: {
+        spin: "spin 1s linear infinite", // Define the spinning animation
+      },
+      keyframes: {
+        spin: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+      },
     },
   },
   plugins: [],

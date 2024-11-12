@@ -29,7 +29,7 @@ export const registerUser = async (req, res, next) => {
     // Save the new user to the database
     await newUser.save()
 
-    res.status(200).json("Register Successfully")
+    res.status(200).json({ success: true, message: "Register Successfully" })
   } catch (error) {
     next(error)
   }
