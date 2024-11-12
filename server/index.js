@@ -6,7 +6,7 @@ import taskRoutes from "./routes/task_route.js"
 import authRoutes from "./routes/auth_route.js"
 
 // Load the environment variables into the application
-dotenv.config() // This loads the environment variables from the .env file into process.env
+dotenv.config()
 
 mongoose
   .connect(process.env.MONGOOSE_API_KEY)
@@ -35,11 +35,11 @@ app.use("/api/auth", authRoutes)
 // Middleware to handle errors. If any route or middleware throws an error, it will be caught here.
 // `err` is the error object, and the middleware will send a structured JSON response with error details.
 app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500 // Default to 500 if no status code is provided
-  const message = err.message || "Internal Server Error" // Default error message if none is provided
+  const statusCode = err.statusCode || 500
+  const message = err.message || "Internal Server Error"
   res.status(statusCode).json({
-    success: false, // Indicating that the request was not successful
-    statusCode, // Sending back the status code of the error
-    message, // Sending back the error message
+    success: false,
+    statusCode,
+    message,
   })
 })

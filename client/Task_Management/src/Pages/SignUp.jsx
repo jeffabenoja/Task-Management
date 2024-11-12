@@ -22,7 +22,6 @@ const SignUp = () => {
   const [newUser, { isLoading, error }] = userAPI.useNewUserMutation()
   const navigate = useNavigate()
 
-  // Setup form with react-hook-form and Yup validation
   const {
     register,
     handleSubmit,
