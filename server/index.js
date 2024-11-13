@@ -5,6 +5,7 @@ import boardRoutes from "./routes/board_route.js"
 import taskRoutes from "./routes/task_route.js"
 import authRoutes from "./routes/auth_route.js"
 import cookieParser from "cookie-parser"
+import path from "path"
 
 // Load the environment variables into the application
 dotenv.config()
@@ -20,6 +21,8 @@ mongoose
     console.log(error)
   })
 
+const __dirname = path.resolve()
+
 const app = express()
 
 // Middleware to parse incoming JSON requests
@@ -33,6 +36,12 @@ app.listen(7000, () => {
 app.use("/api/boards", boardRoutes)
 app.use("/api/task", taskRoutes)
 app.use("/api/auth", authRoutes)
+
+app.use(express.static(path.join(__dirname, "/client/dist")))
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"))
+})
 
 // Middleware to handle errors. If any route or middleware throws an error, it will be caught here.
 // `err` is the error object, and the middleware will send a structured JSON response with error details.
