@@ -5,7 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom"
 import DashboardLayout from "./Layout/DashboardLayout"
-import DashBoard from "./Pages/DashBoard"
+
 import SignUp from "./Pages/SignUp"
 import SignIn from "./Pages/SignIn"
 import Private from "./components/Private"
