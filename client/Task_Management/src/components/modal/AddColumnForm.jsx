@@ -64,7 +64,7 @@ const AddColumnForm = ({ board, toggleModal }) => {
               onChange={(e) => setData({ ...data, name: e.target.value })}
               placeholder='e.g Web Design'
               className='text-black dark:text-primary-100 py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
-                  focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
+              focus:border-[#93A27B] focus:outline-none active:border-[#93A27B] active:outline-none hover:border-[#93A27B]'
               required
               disabled
             />
@@ -87,7 +87,7 @@ const AddColumnForm = ({ board, toggleModal }) => {
                     value={column.name}
                     onChange={(e) => handleColumnChange(index, e)}
                     className='text-black dark:text-primary-100 flex-1 py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
-                        focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
+                    focus:border-[#93A27B] focus:outline-none active:border-[#93A27B] active:outline-none hover:border-[#93A27B]'
                     required
                   />
                   <span
@@ -110,16 +110,16 @@ const AddColumnForm = ({ board, toggleModal }) => {
               <button
                 onClick={addNewColumn}
                 type='button'
-                className='bg-[rgba(99,95,199,0.25)] dark:bg-primary-100 rounded-[20px] py-2'
+                className='bg-[#93A27B] dark:bg-[#B5D8A3] rounded-[20px] py-2'
               >
-                <p className='text-primary-400 body-l'>+ Add New Column</p>
+                <p className='text-[#112F1B] body-l'>+ Add New Column</p>
               </button>
             </div>
           </div>
 
           {/* Handle Submit */}
-          <button className='bg-primary-400 rounded-[20px] py-2' type='submit'>
-            <p className='text-primary-100 body-l'>Update Column</p>
+          <button className='bg-[#112F1B] rounded-[20px] py-2' type='submit'>
+            <p className='text-[#F5B757] body-l'>Update Column</p>
           </button>
         </form>
       </div>

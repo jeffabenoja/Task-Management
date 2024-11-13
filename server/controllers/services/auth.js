@@ -71,10 +71,18 @@ export const loginUser = async (req, res, next) => {
       .cookie("access_token", token, { httpOnly: true })
       .json({
         success: true,
-        data: { ...rest },
+        user: { ...rest },
         message: "Successfully Login",
       })
   } catch (error) {
     next(error)
+  }
+}
+
+export const signOut = (req, res, next) => {
+  try {
+    res.clearCookie("access_token").status(200).json("User has been signed out")
+  } catch (error) {
+    next(errorHandler(error))
   }
 }

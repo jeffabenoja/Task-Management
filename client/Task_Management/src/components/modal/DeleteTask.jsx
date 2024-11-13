@@ -1,6 +1,6 @@
 import api from "../../controller/services/api"
 
-const DeleteBoard = ({ task, toggleModal }) => {
+const DeleteTask = ({ task, toggleModal }) => {
   const [deleteTask] = api.useDeleteTaskMutation()
 
   const handleDeleteBoard = async (e) => {
@@ -32,7 +32,7 @@ const DeleteBoard = ({ task, toggleModal }) => {
         <button
           onClick={toggleModal}
           type='button'
-          className='text-center flex-1 body-l bg-secondary-100 hover:bg-secondary-200 dark:hover:bg-primary-100 text-primary-400 cursor-pointer py-2 rounded-3xl'
+          className='text-center flex-1 body-l bg-[#93A27B] hover:bg-[#112F1B]  text-[#F5B757] cursor-pointer py-2 rounded-3xl'
         >
           Cancel
         </button>
@@ -41,4 +41,4 @@ const DeleteBoard = ({ task, toggleModal }) => {
   )
 }
 
-export default DeleteBoard
+export default DeleteTask

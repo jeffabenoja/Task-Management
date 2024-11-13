@@ -119,7 +119,7 @@ const EditTaskCard = ({ task, columns, toggleModal }) => {
       {/* Status Dropdown */}
       <div
         className=' relative py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
-              focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
+          focus:border-[#93A27B] focus:outline-none active:border-[#93A27B] active:outline-none hover:border-[#93A27B]'
       >
         <div className='flex items-center justify-between w-full cursor-pointer '>
           <span className='text-black dark:text-primary-100'>
@@ -143,7 +143,7 @@ const EditTaskCard = ({ task, columns, toggleModal }) => {
               <div
                 key={c.name}
                 onClick={() => handleDropDown(c)}
-                className='px-4 py-2 cursor-pointer hover:text-primary-400'
+                className='px-4 py-2 cursor-pointer hover:text-[#112F1B]'
               >
                 {c.name}
               </div>
@@ -152,11 +152,11 @@ const EditTaskCard = ({ task, columns, toggleModal }) => {
         )}
       </div>
       <button
-        className='bg-primary-400 rounded-[20px] py-2'
+        className='bg-[#112F1B] rounded-[20px] py-2'
         type='button'
         onClick={handleUpdate}
       >
-        <p className='text-primary-100 body-l'>Update Task</p>
+        <p className='text-[#F5B757] body-l'>Update Task</p>
       </button>
 
       {/* Edit & Delete button */}
@@ -166,13 +166,13 @@ const EditTaskCard = ({ task, columns, toggleModal }) => {
             className='cursor-pointer text-secondary-200'
             onClick={handleEditToggle}
           >
-            Edit Board
+            Edit Task
           </span>
           <span
             className='cursor-pointer text-secondary-400'
             onClick={handleDeleteToggle}
           >
-            Delete Board
+            Delete Task
           </span>
         </div>
       )}

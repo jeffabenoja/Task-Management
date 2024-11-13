@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import boardRoutes from "./routes/board_route.js"
 import taskRoutes from "./routes/task_route.js"
 import authRoutes from "./routes/auth_route.js"
+import cookieParser from "cookie-parser"
 
 // Load the environment variables into the application
 dotenv.config()
@@ -23,6 +24,7 @@ const app = express()
 
 // Middleware to parse incoming JSON requests
 app.use(express.json())
+app.use(cookieParser())
 
 app.listen(7000, () => {
   console.log("server is running on port 7000")

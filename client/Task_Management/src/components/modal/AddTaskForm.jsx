@@ -73,7 +73,7 @@ const AddTaskForm = ({ columns, toggleModal }) => {
               onChange={(e) => setData({ ...data, title: e.target.value })}
               placeholder='e.g Take Coffee Break'
               className='text-black dark:text-primary-100 py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
-              focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
+              focus:border-[#93A27B] focus:outline-none active:border-[#93A27B] active:outline-none hover:border-[#93A27B]'
               required
             />
           </div>
@@ -93,7 +93,7 @@ const AddTaskForm = ({ columns, toggleModal }) => {
                 setData({ ...data, description: e.target.value })
               }
               className='leading-6 text-black dark:text-primary-100 py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
-              focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
+              focus:border-[#93A27B] focus:outline-none active:border-[#93A27B] active:outline-none hover:border-[#93A27B]'
             />
           </div>
 
@@ -121,7 +121,7 @@ const AddTaskForm = ({ columns, toggleModal }) => {
                     value={s.title}
                     onChange={(e) => handleSubtaskChange(index, e)}
                     className='text-black dark:text-primary-100 flex-1 py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
-                    focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
+                    focus:border-[#93A27B] focus:outline-none active:border-[#93A27B] active:outline-none hover:border-[#93A27B]'
                   />
                   <span
                     className='cursor-pointer'
@@ -143,9 +143,9 @@ const AddTaskForm = ({ columns, toggleModal }) => {
               <button
                 onClick={addNewSubtask}
                 type='button'
-                className='bg-[rgba(99,95,199,0.25)] dark:bg-primary-100 rounded-[20px] py-2'
+                className='bg-[#93A27B] dark:bg-[#B5D8A3] rounded-[20px] py-2'
               >
-                <p className='text-primary-400 body-l'>+ Add New Subtask</p>
+                <p className='text-[#112F1B] body-l'>+ Add New Subtask</p>
               </button>
             </div>
           </div>
@@ -153,7 +153,7 @@ const AddTaskForm = ({ columns, toggleModal }) => {
           {/* Status Dropdown */}
           <div
             className=' relative py-2 px-4 border border-secondary-200 border-opacity-25 rounded-md outline-transparent bg-transparent
-              focus:border-primary-400 focus:outline-none active:border-primary-400 active:outline-none hover:border-primary-400'
+              focus:border-[#93A27B] focus:outline-none active:border-[#93A27B] active:outline-none hover:border-[#93A27B]'
           >
             <div className='flex items-center justify-between w-full cursor-pointer '>
               <span className='text-black dark:text-primary-100'>
@@ -177,7 +177,7 @@ const AddTaskForm = ({ columns, toggleModal }) => {
                   <div
                     key={c.name}
                     onClick={() => handleDropDown(c)}
-                    className='px-4 py-2 cursor-pointer hover:text-primary-400'
+                    className='px-4 py-2 cursor-pointer hover:text-[#112F1B]'
                   >
                     {c.name}
                   </div>
@@ -187,8 +187,8 @@ const AddTaskForm = ({ columns, toggleModal }) => {
           </div>
 
           {/* Handle Submit */}
-          <button className='bg-primary-400 rounded-[20px] py-2' type='submit'>
-            <p className='text-primary-100 body-l'>Create Task</p>
+          <button className='bg-[#112F1B] rounded-[20px] py-2' type='submit'>
+            <p className='text-[#F5B757] body-l'>Create Task</p>
           </button>
         </form>
       </div>

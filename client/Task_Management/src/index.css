@@ -159,3 +159,7 @@ textarea {
 input[type="checkbox"]:checked {
   accent-color: var(--color-primary-400);
 }
+
+.text-color {
+  color: rgba(245, 183, 87, 0.7);
+}

@@ -122,8 +122,12 @@ export const updateBoard = async (req, res, next) => {
 
 export const getAllBoards = async (req, res, next) => {
   try {
+    if (req.user.id !== req.params.userId) {
+      return next(errorHandler(404, "Unauthorized"))
+    }
+
     // Fetch all boards
-    const boards = await Board.find().lean()
+    const boards = await Board.find({ userId: req.params.userId }).lean()
 
     // If no boards are found, return a 404 error
     if (!boards) {
@@ -166,6 +170,7 @@ export const deleteBoard = async (req, res, next) => {
   try {
     // Fetch the board
     let board = await Board.findById(req.params.boardId).lean()
+
     if (!board) {
       return res.status(404).json({ message: "Board not found" })
     }

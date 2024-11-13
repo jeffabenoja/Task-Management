@@ -4,10 +4,11 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom"
-import MainLayout from "./Layout/MainLayout"
+import DashboardLayout from "./Layout/DashboardLayout"
 import DashBoard from "./Pages/DashBoard"
 import SignUp from "./Pages/SignUp"
 import SignIn from "./Pages/SignIn"
+import Private from "./components/Private"
 
 const App = () => {
   const router = createBrowserRouter(
@@ -17,8 +18,8 @@ const App = () => {
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/sign-in' element={<SignIn />} />
         {/* Main Layout Private Route */}
-        <Route path='/dashboard' element={<MainLayout />}>
-          <Route path='' element={<DashBoard />} />
+        <Route element={<Private />}>
+          <Route path='/dashboard' element={<DashboardLayout />} />
         </Route>
       </>
     )

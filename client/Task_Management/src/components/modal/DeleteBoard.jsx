@@ -52,7 +52,7 @@ const DeleteBoard = ({ board, toggleModal }) => {
         <button
           onClick={toggleModal}
           type='button'
-          className='text-center flex-1 body-l bg-secondary-100 hover:bg-secondary-200 dark:hover:bg-primary-100 text-primary-400 cursor-pointer py-2 rounded-3xl'
+          className='text-center flex-1 body-l bg-[#93A27B] hover:bg-[#112F1B]  text-[#F5B757] cursor-pointer py-2 rounded-3xl'
         >
           Cancel
         </button>

@@ -3,7 +3,9 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import Spinner from "../components/Spinner"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
-import userAPI from "../controller/services/userAPI"
+import api from "../controller/services/api"
+import { useDispatch } from "react-redux"
+import { signInSuccess } from "../controller/services/userSlice"
 
 const schema = yup.object().shape({
   email: yup
@@ -17,8 +19,8 @@ const schema = yup.object().shape({
 })
 
 const SignIn = () => {
-  const [signInUser, { isLoading, error }] = userAPI.useSignInUserMutation()
-
+  const [signInUser, { isLoading, error }] = api.useSignInUserMutation()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const {
@@ -30,12 +32,13 @@ const SignIn = () => {
   })
 
   const onSubmit = async (formData) => {
-    console.log(formData)
     try {
       const response = await signInUser(formData).unwrap()
       if (response.success) {
         navigate("/dashboard")
+        dispatch(signInSuccess(response.user))
       }
+      console.log(response)
     } catch (error) {
       console.log(error.data.message)
     }
@@ -66,7 +69,7 @@ const SignIn = () => {
               <input
                 type='email'
                 {...register("email")}
-                className='w-full outline-none border border-[#93A27B] focus:ring-1 focus:ring-[#93A27B] focus:border-[#93A27B] active:border-[#93A27B] py-2.5 px-4 mt-2 rounded'
+                className='w-full outline-none border text-secondary-200  border-[#93A27B] focus:ring-1 focus:ring-[#93A27B] focus:border-[#93A27B] active:border-[#93A27B] py-2.5 px-4 mt-2 rounded'
                 placeholder='name@email.com'
               />
               {errors.email && (
@@ -78,7 +81,7 @@ const SignIn = () => {
               <input
                 type='password'
                 {...register("password")}
-                className='w-full outline-none border border-[#93A27B] focus:ring-1 focus:ring-[#93A27B] focus:border-[#93A27B] active:border-[#93A27B] py-2.5 px-4 mt-2 rounded'
+                className='w-full outline-none border text-secondary-200 border-[#93A27B] focus:ring-1 focus:ring-[#93A27B] focus:border-[#93A27B] active:border-[#93A27B] py-2.5 px-4 mt-2 rounded'
                 placeholder='********'
               />
               {errors.password && (
@@ -102,7 +105,7 @@ const SignIn = () => {
           </form>
           <div className='flex gap-2 text-sm mt-5'>
             <span>Don't have an account?</span>
-            <Link to='/sign-up' className='text-[#112F1B]'>
+            <Link to='/sign-up' className='text-[#112F1B] dark:text-[#F5B757]'>
               Sign Up
             </Link>
           </div>
