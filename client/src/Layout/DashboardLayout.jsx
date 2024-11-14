@@ -6,8 +6,6 @@ import { useSelector } from "react-redux"
 const DashboardLayout = () => {
   const { currentUser } = useSelector((state) => state.user)
 
-  console.log(currentUser)
-
   // Only make the API call if userId is available
   const { data: boards = [], error } = api.useGetBoardsQuery(currentUser?._id, {
     skip: !currentUser?._id, // Skip query if userId is not se

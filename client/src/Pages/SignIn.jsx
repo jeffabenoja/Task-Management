@@ -38,7 +38,6 @@ const SignIn = () => {
         navigate("/dashboard")
         dispatch(signInSuccess(response.user))
       }
-      console.log(response)
     } catch (error) {
       console.log(error.data.message)
     }

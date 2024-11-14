@@ -31,7 +31,6 @@ const SignUp = () => {
   })
 
   const onSubmit = async (formData) => {
-    console.log(formData)
     try {
       const response = await newUser(formData).unwrap()
       if (response.success) {
