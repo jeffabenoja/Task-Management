@@ -81,7 +81,7 @@ const AddTaskForm = ({ columns, toggleModal }) => {
           {/* Description */}
           <div className='flex flex-col gap-2'>
             <label htmlFor='description' className='body-l'>
-              Title
+              Description
             </label>
             <textarea
               id='description'
