@@ -22,7 +22,7 @@ The goal of this application is to simplify task management and increase product
 - **User Authentication**: The app allows users to create an account and sign in for a personalized task management experience.
 - **Responsive Design**: The application has been optimized for both desktop and mobile use.
 
-## Technologies Used
+## Technologies
 
 - **Frontend**: React.js
 - **Backend**: Node.js, Express
