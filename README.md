@@ -8,7 +8,7 @@
 
 ## Overview
 
-This report provides a detailed analysis of the **Task Management Application** developed for organizing, tracking, and prioritizing tasks. The application helps users to manage their personal and work-related tasks more efficiently. It includes features like task creation, editing, deletion, progress tracking, and priority settings. The application uses **React.js** for the frontend, **Node.js** and **Express** for the backend, and **MongoDB** for data storage.
+**Task Management Application** developed for organizing, tracking, and prioritizing tasks. The application helps users to manage their personal and work-related tasks more efficiently. It includes features like task creation, editing, deletion, progress tracking, and priority settings. The application uses **React.js** for the frontend, **Node.js** and **Express** for the backend, and **MongoDB** for data storage.
 
 The goal of this application is to simplify task management and increase productivity by providing an easy-to-use, intuitive interface for users to manage their tasks and deadlines effectively.
 
