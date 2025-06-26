@@ -18,8 +18,6 @@ const Board = ({ board }) => {
             <div key={c?._id || index} className='flex flex-col shrink-0 gap-5'>
               {/* Column Header */}
               <div className='flex gap-3 items-center text-secondary-200 '>
-                <h1>Task Maangement</h1>
-                <p>Renz Jefferson A. Padro</p>
                 <div
                   className='w-[15px] h-[15px] rounded-full'
                   style={{ backgroundColor: c.color }}
